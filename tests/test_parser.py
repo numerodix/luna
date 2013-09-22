@@ -1,5 +1,6 @@
 from luna.ast import Boolean
 from luna.ast import Expr
+from luna.ast import Infix
 from luna.ast import Nil
 from luna.ast import Operator
 
@@ -16,14 +17,18 @@ def test_true(parser):
 
 def test_expr_eq(parser):
     assert Expr(
-        Boolean('true'),
-        Operator('=='),
-        Boolean('true')
+        Infix(
+            Boolean('true'),
+            Operator('=='),
+            Boolean('true'),
+        )
     ) == parser.parse('true == true')
 
 def test_expr_neq(parser):
     assert Expr(
-        Boolean('true'),
-        Operator('~='),
-        Boolean('true')
+        Infix(
+            Boolean('true'),
+            Operator('~='),
+            Boolean('true'),
+        )
     ) == parser.parse('true ~= true')

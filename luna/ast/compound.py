@@ -6,3 +6,10 @@ class Expr(ASTNode):
 
     def __init__(self, *values):
         self.values = values
+
+
+class Infix(ASTNode):
+    _slots = ('values',)
+
+    def __init__(self, *values):
+        self.values = values

@@ -2,6 +2,7 @@ from parsimonious.nodes import NodeVisitor
 
 from luna.ast import Boolean
 from luna.ast import Expr
+from luna.ast import Infix
 from luna.ast import Nil
 from luna.ast import Operator
 
@@ -12,13 +13,11 @@ class Rewriter(NodeVisitor):
 
 
     def visit_expr(self, node, vc):
-        try:
-            a, _, op, _, b = vc[0]
-            return Expr(a, op, b)
-        except ValueError:
-            pass
         return Expr(*vc)
 
+    def visit_infix(self, node, vc):
+        a, _, op, _, b = vc
+        return Infix(a, op, b)
 
     def visit_operator(self, node, vc):
         return Operator(node.text)
