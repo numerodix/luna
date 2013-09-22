@@ -48,11 +48,13 @@ def test_expr_quaternary(parse):
     ) == parse('true == true == true == true')
 
 
-def test_expr_plus(parse):
+def test_expr_nums(parse):
     assert Expr(
         Infix(
             Number('1'),
             Operator('+'),
             Number('2'),
+            Operator('*'),
+            Number('3'),
         )
-    ) == parse('1 + 2')
+    ) == parse('1 + 2 * 3')
