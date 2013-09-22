@@ -4,5 +4,6 @@ from luna.parser import Parser
 
 
 @pytest.fixture(scope='module')
-def parser():
-    return Parser()
+def parse():
+    parser = Parser()
+    return parser.parse

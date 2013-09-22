@@ -19,11 +19,13 @@ class Rewriter(NodeVisitor):
         a, _, op, _, b = vc
         return Infix(a, op, b)
 
+
     def visit_operator(self, node, vc):
         return Operator(node.text)
 
     def visit_operand(self, node, vc):
         return vc[0]
+
 
     def visit_boolean(self, node, vc):
         return Boolean(node.text)
