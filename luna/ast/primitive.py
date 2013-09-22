@@ -13,3 +13,10 @@ class Boolean(ASTNode):
 
 class Nil(ASTNode):
     pass
+
+
+class Operator(ASTNode):
+    _slots = ('value',)
+
+    def __init__(self, value):
+        self.value = value

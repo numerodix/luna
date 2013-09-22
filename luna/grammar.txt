@@ -1,4 +1,10 @@
-expr                        = nil / boolean
+expr                        = infix / operand
 
+infix                       = operand whites operator whites operand
+operand                     = boolean / nil
+
+operator                    = "==" / "~="
 boolean                     = "true" / "false"
 nil                         = "nil"
+
+whites                      = ~"\s*"

@@ -1,12 +1,29 @@
 from luna.ast import Boolean
+from luna.ast import Expr
 from luna.ast import Nil
+from luna.ast import Operator
 
 
 def test_nil(parser):
-    assert parser.parse('nil') == Nil()
+    assert Expr(Nil()) == parser.parse('nil')
 
 def test_false(parser):
-    assert parser.parse('false') == Boolean('false')
+    assert Expr(Boolean('false')) == parser.parse('false')
 
 def test_true(parser):
-    assert parser.parse('true') == Boolean('true')
+    assert Expr(Boolean('true')) == parser.parse('true')
+
+
+def test_expr_eq(parser):
+    assert Expr(
+        Boolean('true'),
+        Operator('=='),
+        Boolean('true')
+    ) == parser.parse('true == true')
+
+def test_expr_neq(parser):
+    assert Expr(
+        Boolean('true'),
+        Operator('~='),
+        Boolean('true')
+    ) == parser.parse('true ~= true')
