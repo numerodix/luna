@@ -1,3 +1,4 @@
-#expr                        = boolean
+expr                        = nil / boolean
 
 boolean                     = "true" / "false"
+nil                         = "nil"

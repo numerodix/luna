@@ -1,9 +1,8 @@
 import os
 
 from parsimonious.grammar import Grammar
-from parsimonious.nodes import NodeVisitor
 
-from luna.ast import Boolean
+from luna.rewriter import Rewriter
 from luna import util
 
 
@@ -20,15 +19,6 @@ class Parser(object):
         tree = self.grammar.parse(content)
         tree = self.rewriter.visit(tree)
         return tree
-
-
-class Rewriter(NodeVisitor):
-    def generic_visit(self, node, vc):
-        return vc
-
-    def visit_boolean(self, node, vc):
-        return Boolean(node.text)
-
 
 
 if __name__ == '__main__':
@@ -48,4 +38,3 @@ if __name__ == '__main__':
     else:
         pp = prettyprinter.PP()
         util.write(pp.visit(tree))
-

@@ -9,3 +9,7 @@ class Boolean(ASTNode):
             raise ValueError
 
         self.value = value
+
+
+class Nil(ASTNode):
+    pass
