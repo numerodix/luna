@@ -1,6 +1,7 @@
 expr                        = infix / operand
 
 infix                       = operand whites operator whites operand
+                                ( whites operator whites operand )*
 operand                     = boolean / nil
 
 operator                    = "==" / "~="

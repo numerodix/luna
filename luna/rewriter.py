@@ -1,3 +1,5 @@
+from functools import reduce
+
 from parsimonious.nodes import NodeVisitor
 
 from luna.ast import Boolean
@@ -16,8 +18,13 @@ class Rewriter(NodeVisitor):
         return Expr(*vc)
 
     def visit_infix(self, node, vc):
-        a, _, op, _, b = vc
-        return Infix(a, op, b)
+        a, _, op, _, b, rest = vc
+        args = [a, op, b]
+        if rest:
+            rest = [[a, b] for (_, a, _, b) in rest]
+            rest = reduce(lambda a,b: a + b, rest)
+            args = args + rest
+        return Infix(*args)
 
 
     def visit_operator(self, node, vc):

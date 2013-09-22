@@ -32,3 +32,16 @@ def test_expr_neq(parse):
             Boolean('true'),
         )
     ) == parse('true ~= true')
+
+def test_expr_quaternary(parse):
+    assert Expr(
+        Infix(
+            Boolean('true'),
+            Operator('=='),
+            Boolean('true'),
+            Operator('=='),
+            Boolean('true'),
+            Operator('=='),
+            Boolean('true'),
+        )
+    ) == parse('true == true == true == true')
