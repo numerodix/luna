@@ -6,6 +6,7 @@ from luna.ast import Boolean
 from luna.ast import Expr
 from luna.ast import Infix
 from luna.ast import Nil
+from luna.ast import Number
 from luna.ast import Operator
 
 
@@ -39,3 +40,6 @@ class Rewriter(NodeVisitor):
 
     def visit_nil(self, node, vc):
         return Nil()
+
+    def visit_number(self, node, vc):
+        return Number(node.text)

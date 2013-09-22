@@ -2,6 +2,7 @@ from luna.ast import Boolean
 from luna.ast import Expr
 from luna.ast import Infix
 from luna.ast import Nil
+from luna.ast import Number
 from luna.ast import Operator
 
 
@@ -45,3 +46,13 @@ def test_expr_quaternary(parse):
             Boolean('true'),
         )
     ) == parse('true == true == true == true')
+
+
+def test_expr_plus(parse):
+    assert Expr(
+        Infix(
+            Number('1'),
+            Operator('+'),
+            Number('2'),
+        )
+    ) == parse('1 + 2')
