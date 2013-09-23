@@ -18,10 +18,3 @@ class Expr(ASTNode):
     @property
     def right(self):
         return self.values[2]
-
-
-class Infix(ASTNode):
-    _slots = ('values',)
-
-    def __init__(self, *values):
-        self.values = values

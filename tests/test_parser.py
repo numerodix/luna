@@ -1,6 +1,6 @@
 from luna.ast import Boolean
 from luna.ast import Expr
-from luna.ast import Infix
+from luna.ast import Identifier
 from luna.ast import Nil
 from luna.ast import Number
 from luna.ast import Operator

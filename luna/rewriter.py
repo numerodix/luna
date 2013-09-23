@@ -4,7 +4,7 @@ from parsimonious.nodes import NodeVisitor
 
 from luna.ast import Boolean
 from luna.ast import Expr
-from luna.ast import Infix
+from luna.ast import Identifier
 from luna.ast import Nil
 from luna.ast import Number
 from luna.ast import Operator
@@ -26,8 +26,13 @@ class Rewriter(NodeVisitor):
         if node.children[0].expr_name == 'factor':
             args = vc
 
-        # ( ( factor ws operator ws expr ) ( operator expr )* )
-        else:
+        # ( unary_op ws expr )
+        elif len(vc[0]) == 3:
+            op, ws, expr = vc[0]
+            # TODO: implement tests for not, and, or
+
+        # ( factor ws operator ws expr )
+        elif len(vc[0]) == 5:
             factor, ws, op, ws, expr = vc[0]
 
             # unwrap Expr if it only has one value
@@ -62,7 +67,7 @@ class Rewriter(NodeVisitor):
         return args
 
 
-    def visit_operator(self, node, vc):
+    def visit_binary_op(self, node, vc):
         return Operator(node.text)
 
     def visit_operand(self, node, vc):
@@ -71,6 +76,9 @@ class Rewriter(NodeVisitor):
 
     def visit_boolean(self, node, vc):
         return Boolean(node.text)
+
+    def visit_identifier(self, node, vc):
+        return Identifier(node.text)
 
     def visit_nil(self, node, vc):
         return Nil()
