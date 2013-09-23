@@ -4,6 +4,7 @@ from luna.ast import Infix
 from luna.ast import Nil
 from luna.ast import Number
 from luna.ast import Operator
+from luna.ast import String
 
 
 def test_nil(parse):
@@ -26,6 +27,13 @@ def test_float3(parse):
     assert Expr(Number('.1')) == parse('.1')
 
 
+def test_string(parse):
+    assert Expr(String("a'a")) == parse("'a\\'a'")
+
+def test_string2(parse):
+    assert Expr(String('a"a')) == parse('"a\\"a"')
+
+
 def test_expr_eq(parse):
     assert Expr(
             Boolean('true'),
@@ -40,17 +48,6 @@ def test_expr_neq(parse):
             Boolean('true'),
     ) == parse('true ~= true')
 
-
-def test_expr_ternary(parse):
-    assert Expr(
-        Boolean('true'),
-        Operator('=='),
-        Expr(
-            Boolean('true'),
-            Operator('=='),
-            Boolean('true'),
-        ),
-    ) == parse('true == true == true')
 
 def test_expr_paren(parse):
     assert Expr(
@@ -74,6 +71,17 @@ def test_expr_paren2(parse):
         ),
     ) == parse('true == ( true == true )')
 
+
+def test_expr_ternary(parse):
+    assert Expr(
+        Boolean('true'),
+        Operator('=='),
+        Expr(
+            Boolean('true'),
+            Operator('=='),
+            Boolean('true'),
+        ),
+    ) == parse('true == true == true')
 
 def test_expr_quaternary(parse):
     assert Expr(

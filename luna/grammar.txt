@@ -1,10 +1,12 @@
 expr                        = ( factor ws operator ws expr ) / factor
 factor                      = ( "(" ws expr ws ")" ) / operand
 
-operand                     = boolean / nil / number
+operand                     = boolean / nil / number / string
 operator                    = "==" / "~=" / "<" / ">" / "<=" / "=>"
                                 / "+" / "-" / "*" / "/"
 
+string                      = ( "'" ( "\\'" / ~"[^']" )* "'" )
+                                / ( '"' ( '\\"' / ~'[^"]' )* '"' )
 number                      = ~"[0-9]+[.][0-9]*" / ~"[0-9]*[.][0-9]+" / ~"[0-9]+"
 boolean                     = "true" / "false"
 nil                         = "nil"

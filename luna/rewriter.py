@@ -1,4 +1,4 @@
-from functools import reduce
+import re
 
 from parsimonious.nodes import NodeVisitor
 
@@ -8,6 +8,7 @@ from luna.ast import Infix
 from luna.ast import Nil
 from luna.ast import Number
 from luna.ast import Operator
+from luna.ast import String
 
 
 class Rewriter(NodeVisitor):
@@ -60,15 +61,6 @@ class Rewriter(NodeVisitor):
 
         return args
 
-    def visit_infix(self, node, vc):
-        a, _, op, _, b, rest = vc
-        args = [a, op, b]
-        if rest:
-            rest = [[a, b] for (_, a, _, b) in rest]
-            rest = reduce(lambda a,b: a + b, rest)
-            args = args + rest
-        return Infix(*args)
-
 
     def visit_operator(self, node, vc):
         return Operator(node.text)
@@ -85,3 +77,9 @@ class Rewriter(NodeVisitor):
 
     def visit_number(self, node, vc):
         return Number(node.text)
+
+    def visit_string(self, node, vc):
+        s = node.text[1:-1]
+        s = s.replace('\\"', '"')
+        s = s.replace("\\'", "'")
+        return String(s)

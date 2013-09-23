@@ -27,3 +27,10 @@ class Operator(ASTNode):
 
     def __init__(self, value):
         self.value = value
+
+
+class String(ASTNode):
+    _slots = ('value',)
+
+    def __init__(self, value):
+        self.value = value
