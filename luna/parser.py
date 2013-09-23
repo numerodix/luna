@@ -1,3 +1,4 @@
+import re
 import os
 
 from parsimonious.grammar import Grammar
@@ -13,12 +14,33 @@ class Parser(object):
         content = util.read(fp)
 
         self.grammar = Grammar(content)
-        self.rewriter = Rewriter()
+        optable = OperatorTable()
+        self.rewriter = Rewriter(optable)
 
     def parse(self, content):
         tree = self.grammar.parse(content)
         tree = self.rewriter.visit(tree)
         return tree
+
+
+class OperatorTable(object):
+    def __init__(self):
+        dir = os.path.dirname(os.path.abspath(__file__))
+        fp = os.path.join(dir, 'operators.txt')
+        content = util.read(fp)
+
+        content = re.sub('#.*', '', content)
+        lines = content.split('\n')
+
+        idx = {}
+        for i, line in enumerate(lines):
+            for op in re.split('[ ]+', line):
+                idx[op] = i
+
+        self._idx = idx
+
+    def level(self, op):
+        return self._idx[op]
 
 
 if __name__ == '__main__':

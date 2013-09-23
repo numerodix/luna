@@ -11,6 +11,10 @@ from luna.ast import Operator
 
 
 class Rewriter(NodeVisitor):
+    def __init__(self, optable, *args, **kwargs):
+        super(Rewriter, self).__init__(*args, **kwargs)
+        self.optable = optable
+
     def generic_visit(self, node, vc):
         return vc
 
@@ -28,6 +32,15 @@ class Rewriter(NodeVisitor):
             # unwrap Expr if it only has one value
             if len(expr.values) == 1:
                 expr = expr.values[0]
+
+            # apply operator precedence
+            if type(expr) == Expr:
+                op2 = expr.op
+
+                if self.optable.level(op.value) < self.optable.level(op2.value):
+                    inner = Expr(factor, op, expr.left)
+                    outer = Expr(inner, op2, expr.right)
+                    return outer
 
             args = [factor, op, expr]
 

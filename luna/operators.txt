@@ -1,0 +1,5 @@
+# operator precedence table. space separated, one level per line
+* /
++ -
+==
+=

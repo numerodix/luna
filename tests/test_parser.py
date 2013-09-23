@@ -53,6 +53,17 @@ def test_expr_paren(parse):
         Boolean('true'),
     ) == parse('( true == true ) == true')
 
+def test_expr_paren2(parse):
+    assert Expr(
+        Boolean('true'),
+        Operator('=='),
+        Expr(
+            Boolean('true'),
+            Operator('=='),
+            Boolean('true'),
+        ),
+    ) == parse('true == ( true == true )')
+
 
 def test_expr_quaternary(parse):
     assert Expr(
@@ -72,11 +83,22 @@ def test_expr_quaternary(parse):
 
 def test_expr_nums(parse):
     assert Expr(
+        Expr(
+            Number('1'),
+            Operator('*'),
+            Number('2'),
+        ),
+        Operator('+'),
+        Number('3'),
+    ) == parse('1 * 2 + 3')
+
+def test_expr_nums2(parse):
+    assert Expr(
         Number('1'),
-        Operator('*'),
+        Operator('+'),
         Expr(
             Number('2'),
-            Operator('+'),
+            Operator('*'),
             Number('3'),
-        )
-    ) == parse('1 * 2 + 3')
+        ),
+    ) == parse('1 + 2 * 3')
