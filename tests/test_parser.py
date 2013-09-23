@@ -16,6 +16,16 @@ def test_true(parse):
     assert Expr(Boolean('true')) == parse('true')
 
 
+def test_float(parse):
+    assert Expr(Number('1')) == parse('1')
+
+def test_float2(parse):
+    assert Expr(Number('1.')) == parse('1.')
+
+def test_float3(parse):
+    assert Expr(Number('.1')) == parse('.1')
+
+
 def test_expr_eq(parse):
     assert Expr(
             Boolean('true'),
