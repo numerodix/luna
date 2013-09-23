@@ -18,43 +18,65 @@ def test_true(parse):
 
 def test_expr_eq(parse):
     assert Expr(
-        Infix(
             Boolean('true'),
             Operator('=='),
             Boolean('true'),
-        )
     ) == parse('true == true')
 
 def test_expr_neq(parse):
     assert Expr(
-        Infix(
             Boolean('true'),
             Operator('~='),
             Boolean('true'),
-        )
     ) == parse('true ~= true')
+
+
+def test_expr_ternary(parse):
+    assert Expr(
+        Boolean('true'),
+        Operator('=='),
+        Expr(
+            Boolean('true'),
+            Operator('=='),
+            Boolean('true'),
+        ),
+    ) == parse('true == true == true')
+
+def test_expr_paren(parse):
+    assert Expr(
+        Expr(
+            Boolean('true'),
+            Operator('=='),
+            Boolean('true'),
+        ),
+        Operator('=='),
+        Boolean('true'),
+    ) == parse('( true == true ) == true')
+
 
 def test_expr_quaternary(parse):
     assert Expr(
-        Infix(
+        Boolean('true'),
+        Operator('=='),
+        Expr(
             Boolean('true'),
             Operator('=='),
-            Boolean('true'),
-            Operator('=='),
-            Boolean('true'),
-            Operator('=='),
-            Boolean('true'),
-        )
+            Expr(
+                Boolean('true'),
+                Operator('=='),
+                Boolean('true'),
+            ),
+        ),
     ) == parse('true == true == true == true')
 
 
 def test_expr_nums(parse):
     assert Expr(
-        Infix(
-            Number('1'),
-            Operator('+'),
+        Number('1'),
+        Operator('*'),
+        Expr(
             Number('2'),
-            Operator('*'),
+            Operator('+'),
             Number('3'),
         )
-    ) == parse('1 + 2 * 3')
+    ) == parse('1 * 2 + 3')

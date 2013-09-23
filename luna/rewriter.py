@@ -16,7 +16,36 @@ class Rewriter(NodeVisitor):
 
 
     def visit_expr(self, node, vc):
-        return Expr(*vc)
+        args = []
+        # factor
+        if node.children[0].expr_name == 'factor':
+            args = vc
+
+        # ( ( factor ws operator ws expr ) ( operator expr )* )
+        else:
+            [factor, ws, op, ws, expr], rest = vc[0]
+
+            # unwrap Expr if it only has one value
+            if len(expr.values) == 1:
+                expr = expr.values[0]
+
+            args = [factor, op, expr]
+
+        return Expr(*args)
+
+    def visit_factor(self, node, vc):
+        args = []
+
+        # operand
+        if node.children[0].expr_name == 'operand':
+            args = vc[0]
+
+        # ( expr )
+        else:
+            paren, ws, expr, ws, paren = vc[0]
+            args = expr
+
+        return args
 
     def visit_infix(self, node, vc):
         a, _, op, _, b, rest = vc
