@@ -27,7 +27,7 @@ class Rewriter(NodeVisitor):
 
         # ( ( factor ws operator ws expr ) ( operator expr )* )
         else:
-            [factor, ws, op, ws, expr], rest = vc[0]
+            factor, ws, op, ws, expr = vc[0]
 
             # unwrap Expr if it only has one value
             if len(expr.values) == 1:

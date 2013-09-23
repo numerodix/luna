@@ -1,4 +1,4 @@
-expr                        = ( ( factor ws operator ws expr ) ( operator expr )* ) / factor
+expr                        = ( factor ws operator ws expr ) / factor
 factor                      = ( "(" ws expr ws ")" ) / operand
 
 operand                     = boolean / nil / number

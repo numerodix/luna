@@ -1,4 +1,4 @@
-# operator precedence table. space separated, one level per line
+# operator precedence table. space separated, one level per line descending
 * /
 + -
 ==
