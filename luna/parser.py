@@ -17,7 +17,7 @@ class Parser(object):
         optable = OperatorTable()
         self.rewriter = Rewriter(optable)
 
-    def parse(self, content, rule=None):
+    def parse_with_rule(self, rule, content):
         grammar = self.grammar
         if rule is not None:
             grammar = grammar[rule]
@@ -25,6 +25,9 @@ class Parser(object):
         tree = grammar.parse(content)
         tree = self.rewriter.visit(tree)
         return tree
+
+    def parse(self, content):
+        return self.parse_with_rule(None, content)
 
 
 class OperatorTable(object):

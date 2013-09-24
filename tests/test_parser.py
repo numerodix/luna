@@ -9,42 +9,42 @@ from luna.ast import String
 from luna.ast import UnaryOp
 
 
-def test_nil(parse):
-    assert Nil() == parse('nil', rule='operand')
+def test_nil(parse_operand):
+    assert Nil() == parse_operand('nil')
 
-def test_false(parse):
-    assert Boolean('false') == parse('false', rule='operand')
+def test_false(parse_operand):
+    assert Boolean('false') == parse_operand('false')
 
-def test_true(parse):
-    assert Boolean('true') == parse('true', rule='operand')
-
-
-def test_float1(parse):
-    assert Number('1') == parse('1', rule='operand')
-
-def test_float2(parse):
-    assert Number('1.') == parse('1.', rule='operand')
-
-def test_float3(parse):
-    assert Number('.1') == parse('.1', rule='operand')
+def test_true(parse_operand):
+    assert Boolean('true') == parse_operand('true')
 
 
-def test_string1(parse):
-    assert String("a'a") == parse("'a\\'a'", rule='string')
+def test_float1(parse_operand):
+    assert Number('1') == parse_operand('1')
 
-def test_string2(parse):
-    assert String('a"a') == parse('"a\\"a"', rule='string')
+def test_float2(parse_operand):
+    assert Number('1.') == parse_operand('1.')
+
+def test_float3(parse_operand):
+    assert Number('.1') == parse_operand('.1')
 
 
-def test_expr_unary1(parse):
+def test_string1(parse_operand):
+    assert String("a'a") == parse_operand("'a\\'a'")
+
+def test_string2(parse_operand):
+    assert String('a"a') == parse_operand('"a\\"a"')
+
+
+def test_expr_unary1(parse_expr):
     assert Expr(
         UnaryOp(
             Operator('not'),
             Boolean('true'),
         ),
-    ) == parse('not true')
+    ) == parse_expr('not true')
 
-def test_expr_unary2(parse):
+def test_expr_unary2(parse_expr):
     assert Expr(
         UnaryOp(
             Operator('not'),
@@ -55,29 +55,29 @@ def test_expr_unary2(parse):
                 ),
             ),
         ),
-    ) == parse('not not true')
+    ) == parse_expr('not not true')
 
 
-def test_expr_eq(parse):
+def test_expr_eq(parse_expr):
     assert Expr(
         BinOp(
             Boolean('true'),
             Operator('=='),
             Boolean('true'),
         ),
-    ) == parse('true == true')
+    ) == parse_expr('true == true')
 
-def test_expr_neq(parse):
+def test_expr_neq(parse_expr):
     assert Expr(
         BinOp(
             Boolean('true'),
             Operator('~='),
             Boolean('true'),
         ),
-    ) == parse('true ~= true')
+    ) == parse_expr('true ~= true')
 
 
-def test_expr_paren1(parse):
+def test_expr_paren1(parse_expr):
     assert Expr(
         BinOp(
             Expr(
@@ -90,9 +90,9 @@ def test_expr_paren1(parse):
             Operator('=='),
             Boolean('true'),
         ),
-    ) == parse('( true == true ) == true')
+    ) == parse_expr('( true == true ) == true')
 
-def test_expr_paren2(parse):
+def test_expr_paren2(parse_expr):
     assert Expr(
         BinOp(
             Boolean('true'),
@@ -105,10 +105,10 @@ def test_expr_paren2(parse):
                 ),
             ),
         ),
-    ) == parse('true == ( true == true )')
+    ) == parse_expr('true == ( true == true )')
 
 
-def test_expr_ternary(parse):
+def test_expr_ternary(parse_expr):
     assert Expr(
         BinOp(
             Boolean('true'),
@@ -121,9 +121,9 @@ def test_expr_ternary(parse):
                 ),
             ),
         ),
-    ) == parse('true == true == true')
+    ) == parse_expr('true == true == true')
 
-def test_expr_quaternary(parse):
+def test_expr_quaternary(parse_expr):
     assert Expr(
         BinOp(
             Boolean('true'),
@@ -142,10 +142,10 @@ def test_expr_quaternary(parse):
                 ),
             ),
         ),
-    ) == parse('true == true == true == true')
+    ) == parse_expr('true == true == true == true')
 
 
-def test_expr_nums1(parse):
+def test_expr_nums1(parse_expr):
     assert Expr(
         BinOp(
             Expr(
@@ -158,9 +158,9 @@ def test_expr_nums1(parse):
             Operator('+'),
             Number('3'),
         ),
-    ) == parse('1 * 2 + 3')
+    ) == parse_expr('1 * 2 + 3')
 
-def test_expr_nums2(parse):
+def test_expr_nums2(parse_expr):
     assert Expr(
         BinOp(
             Number('1'),
@@ -173,9 +173,9 @@ def test_expr_nums2(parse):
                 ),
             ),
         ),
-    ) == parse('1 + 2 * 3')
+    ) == parse_expr('1 + 2 * 3')
 
-def test_expr_nums3(parse):
+def test_expr_nums3(parse_expr):
     Expr(
         BinOp(
             Expr(
@@ -187,4 +187,4 @@ def test_expr_nums3(parse):
             Operator('+'),
             Number('1'),
         ),
-    ) == parse('-1 + 1')
+    ) == parse_expr('-1 + 1')
