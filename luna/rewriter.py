@@ -2,6 +2,7 @@ import re
 
 from parsimonious.nodes import NodeVisitor
 
+from luna.ast import BinOp
 from luna.ast import Boolean
 from luna.ast import Expr
 from luna.ast import Identifier
@@ -9,6 +10,7 @@ from luna.ast import Nil
 from luna.ast import Number
 from luna.ast import Operator
 from luna.ast import String
+from luna.ast import UnaryOp
 
 
 class Rewriter(NodeVisitor):
@@ -21,36 +23,7 @@ class Rewriter(NodeVisitor):
 
 
     def visit_expr(self, node, vc):
-        args = []
-        # factor
-        if node.children[0].expr_name == 'factor':
-            args = vc
-
-        # ( unary_op ws expr )
-        elif len(vc[0]) == 3:
-            op, ws, expr = vc[0]
-            # TODO: implement tests for not, and, or
-
-        # ( factor ws operator ws expr )
-        elif len(vc[0]) == 5:
-            factor, ws, op, ws, expr = vc[0]
-
-            # unwrap Expr if it only has one value
-            if len(expr.values) == 1:
-                expr = expr.values[0]
-
-            # apply operator precedence
-            if type(expr) == Expr:
-                op2 = expr.op
-
-                if self.optable.level(op.value) < self.optable.level(op2.value):
-                    inner = Expr(factor, op, expr.left)
-                    outer = Expr(inner, op2, expr.right)
-                    return outer
-
-            args = [factor, op, expr]
-
-        return Expr(*args)
+        return Expr(*vc)
 
     def visit_factor(self, node, vc):
         args = []
@@ -65,6 +38,28 @@ class Rewriter(NodeVisitor):
             args = expr
 
         return args
+
+    def visit_binop(self, node, vc):
+        factor, ws, op, ws, expr = vc
+
+        # unwrap Expr if it only has one value
+        if type(expr.value) not in [BinOp, UnaryOp]:
+            expr = expr.value
+
+        # apply operator precedence
+        if type(expr.value) == BinOp:
+            op2 = expr.value.op
+
+            if self.optable.level(op.value) < self.optable.level(op2.value):
+                inner = BinOp(factor, op, expr.value.left)
+                outer = BinOp(Expr(inner), op2, expr.value.right)
+                return outer
+
+        return BinOp(factor, op, expr)
+
+    def visit_unop(self, node, vc):
+        op, ws, expr = vc
+        return UnaryOp(factor, op, expr)
 
 
     def visit_op2(self, node, vc):
