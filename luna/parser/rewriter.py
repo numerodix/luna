@@ -24,7 +24,7 @@ class Rewriter(NodeVisitor):
 
 
     def visit_stmt(self, node, vc):
-        printf, paren_open, ws, expr, ws, paren_close = vc
+        printf, paren_open, ws, expr, ws, paren_close, ws = vc
         return Print(expr)
 
     def visit_expr(self, node, vc):

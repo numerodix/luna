@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from luna import util
+from luna.parser import Parser
+from luna.interpreter import EvalVisitor
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input')
+    parser.add_argument('-d', dest='dump', action="store_true")
+    args = parser.parse_args()
+
+    content = util.read(args.input)
+    parser = Parser()
+    tree = parser.parse(content)
+
+    if args.dump:
+        util.write(tree.pp())
+    else:
+        visitor = EvalVisitor()
+        visitor.visit(tree)

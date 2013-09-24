@@ -1,4 +1,4 @@
-stmt                = "print" "(" ws expr ws ")"
+stmt                = "print" "(" ws expr ws ")" ws
 
 expr                = binop / unop / factor
 factor              = ( "(" ws expr ws ")" )

@@ -1,3 +1,3 @@
 #!/bin/bash -x
 
-python -m luna.parser $@
+python -m luna.parser.parser $@
