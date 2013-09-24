@@ -39,6 +39,7 @@ class OperatorTable(object):
         idx = {}
         for i, line in enumerate(lines):
             for op in re.split('[ ]+', line):
+                op = op.strip()
                 idx[op] = i
 
         self._idx = idx
