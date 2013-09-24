@@ -3,7 +3,7 @@ import os
 
 from parsimonious.grammar import Grammar
 
-from luna.rewriter import Rewriter
+from luna.parser.rewriter import Rewriter
 from luna import util
 
 
