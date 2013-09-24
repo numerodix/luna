@@ -1,14 +1,14 @@
-expr                        = ( factor ws binary_op ws expr )
-                                / ( unary_op ws expr )
+expr                        = ( factor ws op2 ws expr )
+                                / ( op1 ws expr )
                                 / factor
 factor                      = ( "(" ws expr ws ")" )
                                 / operand
 
 operand                     = boolean / nil / number / string
-binary_op                   = "==" / "~=" / "<" / ">" / "<=" / "=>"
+op2                         = "==" / "~=" / "<" / ">" / "<=" / "=>"
                                 / "+" / "-" / "*" / "/"
                                 / "and" / "or"
-unary_op                    = "-" / "not"
+op1                         = "-" / "not"
 keyword                     = "break" / "do" / "else" / "elseif" / "end"
                                 / "for" / "function" / "goto" / "if" / "in"
                                 / "local" / "repeat" / "return"

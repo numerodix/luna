@@ -67,7 +67,7 @@ class Rewriter(NodeVisitor):
         return args
 
 
-    def visit_binary_op(self, node, vc):
+    def visit_op2(self, node, vc):
         return Operator(node.text)
 
     def visit_operand(self, node, vc):
