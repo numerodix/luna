@@ -20,5 +20,11 @@ class EvalVisitor(GenericVisitor):
     def visit_boolean(self, node, vc):
         return True if node.value == 'true' else False
 
+    def visit_nil(self, node, vc):
+        return None
+
     def visit_number(self, node, vc):
         return float(node.value)
+
+    def visit_string(self, node, vc):
+        return node.value
