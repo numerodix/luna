@@ -1,8 +1,17 @@
-def test_eval_expr1(eval_expr):
+def test_eval_nums1(eval_expr):
     assert 2 == eval_expr('1 + 1')
 
-def test_eval_expr2(eval_expr):
+def test_eval_nums2(eval_expr):
     assert 0 == eval_expr('1 - 1')
+
+def test_eval_nums3(eval_expr):
+    assert 0 == eval_expr('-1 + 1')
+
+def test_eval_nums4(eval_expr):
+    assert 7 == eval_expr('1 + 2 * 3')
+
+def test_eval_nums5(eval_expr):
+    assert 5 == eval_expr('1 * 2 + 3')
 
 
 def test_eval_expr3(eval_expr):
