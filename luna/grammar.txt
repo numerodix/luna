@@ -2,8 +2,8 @@ expr                        = binop / unop / factor
 factor                      = ( "(" ws expr ws ")" )
                                 / operand
 
-binop                       = ( factor ws op2 ws expr )
-unop                        = ( op1 ws expr )
+binop                       = factor ws op2 ws expr
+unop                        = op1 ws expr
 
 operand                     = boolean / nil / number / string
 op2                         = "==" / "~=" / "<" / ">" / "<=" / "=>"
