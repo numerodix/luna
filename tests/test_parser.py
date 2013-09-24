@@ -36,6 +36,15 @@ def test_string2(parse):
     assert String('a"a') == parse('"a\\"a"', rule='string')
 
 
+def test_expr_unary1(parse):
+    assert Expr(
+        UnaryOp(
+            Operator('not'),
+            Boolean('true'),
+        ),
+    ) == parse('not true')
+
+
 def test_expr_eq(parse):
     assert Expr(
         BinOp(

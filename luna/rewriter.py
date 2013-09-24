@@ -59,8 +59,16 @@ class Rewriter(NodeVisitor):
 
     def visit_unop(self, node, vc):
         op, ws, expr = vc
-        return UnaryOp(factor, op, expr)
 
+        # unwrap Expr if it only has one value
+        if type(expr.value) not in [BinOp, UnaryOp]:
+            expr = expr.value
+
+        return UnaryOp(op, expr)
+
+
+    def visit_op1(self, node, vc):
+        return Operator(node.text)
 
     def visit_op2(self, node, vc):
         return Operator(node.text)
