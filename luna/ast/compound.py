@@ -2,7 +2,7 @@ from luna.ast.base import ASTNode
 
 
 class BinOp(ASTNode):
-    _slots = ('values',)
+    _slots = ('left', 'op', 'right')
 
     def __init__(self, left, op, right):
         self.left = left
@@ -18,7 +18,7 @@ class Expr(ASTNode):
 
 
 class UnaryOp(ASTNode):
-    _slots = ('values',)
+    _slots = ('op', 'right')
 
     def __init__(self, op, right):
         self.op = op

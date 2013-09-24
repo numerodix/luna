@@ -44,6 +44,19 @@ def test_expr_unary1(parse):
         ),
     ) == parse('not true')
 
+def test_expr_unary2(parse):
+    assert Expr(
+        UnaryOp(
+            Operator('not'),
+            Expr(
+                UnaryOp(
+                    Operator('not'),
+                    Boolean('true'),
+                ),
+            ),
+        ),
+    ) == parse('not not true')
+
 
 def test_expr_eq(parse):
     assert Expr(
@@ -163,5 +176,15 @@ def test_expr_nums2(parse):
     ) == parse('1 + 2 * 3')
 
 def test_expr_nums3(parse):
-    # TODO fixme
-    parse('-1 + 1')
+    Expr(
+        BinOp(
+            Expr(
+                UnaryOp(
+                    Operator('-'),
+                    Number('1'),
+                ),
+            ),
+            Operator('+'),
+            Number('1'),
+        ),
+    ) == parse('-1 + 1')

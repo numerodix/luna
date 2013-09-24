@@ -42,15 +42,15 @@ class Rewriter(NodeVisitor):
     def visit_binop(self, node, vc):
         factor, ws, op, ws, expr = vc
 
-        # unwrap Expr if it only has one value
+        # unwrap Expr if it only has an operand
         if type(expr.value) not in [BinOp, UnaryOp]:
             expr = expr.value
 
         # apply operator precedence
-        if type(expr.value) == BinOp:
+        elif type(expr.value) == BinOp:
             op2 = expr.value.op
 
-            if self.optable.level(op.value) < self.optable.level(op2.value):
+            if self.optable.level(op.value, 2) > self.optable.level(op2.value, 2):
                 inner = BinOp(factor, op, expr.value.left)
                 outer = BinOp(Expr(inner), op2, expr.value.right)
                 return outer
@@ -63,6 +63,15 @@ class Rewriter(NodeVisitor):
         # unwrap Expr if it only has one value
         if type(expr.value) not in [BinOp, UnaryOp]:
             expr = expr.value
+
+        # apply operator precedence
+        elif type(expr.value) == BinOp:
+            op2 = expr.value.op
+
+            if self.optable.level(op.value, 1) > self.optable.level(op2.value, 2):
+                inner = UnaryOp(op, expr.value.left)
+                outer = BinOp(Expr(inner), op2, expr.value.right)
+                return outer
 
         return UnaryOp(op, expr)
 

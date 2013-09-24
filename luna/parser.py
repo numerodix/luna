@@ -35,17 +35,23 @@ class OperatorTable(object):
 
         content = re.sub('#.*', '', content)
         lines = content.split('\n')
+        lines = [line for line in lines if line]
 
         idx = {}
         for i, line in enumerate(lines):
             for op in re.split('[ ]+', line):
                 op = op.strip()
-                idx[op] = i
+                arity, op = op.split(':')
+
+                arity = int(arity)
+                level = len(lines) - i
+
+                idx[(op, arity)] = level
 
         self._idx = idx
 
-    def level(self, op):
-        return self._idx[op]
+    def level(self, op, arity):
+        return self._idx[(op, arity)]
 
 
 if __name__ == '__main__':
