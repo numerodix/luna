@@ -161,3 +161,7 @@ def test_expr_nums2(parse):
             ),
         ),
     ) == parse('1 + 2 * 3')
+
+def test_expr_nums3(parse):
+    # TODO fixme
+    parse('-1 + 1')
