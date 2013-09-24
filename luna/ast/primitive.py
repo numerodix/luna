@@ -31,9 +31,17 @@ class Number(ASTNode):
 
 class Operator(ASTNode):
     _slots = ('value',)
+    map = {
+        '~=': '!=',
+    }
 
     def __init__(self, value):
         self.value = value
+
+    @property
+    def pyvalue(self):
+        pyop = self.map.get(self.value)
+        return pyop or self.value
 
 
 class String(ASTNode):

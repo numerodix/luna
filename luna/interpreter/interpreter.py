@@ -15,7 +15,7 @@ class EvalVisitor(GenericVisitor):
 
 
     def visit_operator(self, node, vc):
-        return node.value
+        return node.pyvalue
 
     def visit_boolean(self, node, vc):
         return True if node.value == 'true' else False

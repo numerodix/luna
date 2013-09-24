@@ -12,4 +12,7 @@ def test_eval_expr4(eval_expr):
     assert True == eval_expr('true == true')
 
 def test_eval_expr5(eval_expr):
+    assert False == eval_expr('true ~= true')
+
+def test_eval_expr6(eval_expr):
     assert False == eval_expr('not true')
