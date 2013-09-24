@@ -8,30 +8,30 @@ from luna.ast import String
 
 
 def test_nil(parse):
-    assert Expr(Nil()) == parse('nil')
+    assert Nil() == parse('nil', rule='operand')
 
 def test_false(parse):
-    assert Expr(Boolean('false')) == parse('false')
+    assert Boolean('false') == parse('false', rule='operand')
 
 def test_true(parse):
-    assert Expr(Boolean('true')) == parse('true')
+    assert Boolean('true') == parse('true', rule='operand')
 
 
 def test_float(parse):
-    assert Expr(Number('1')) == parse('1')
+    assert Number('1') == parse('1', rule='operand')
 
 def test_float2(parse):
-    assert Expr(Number('1.')) == parse('1.')
+    assert Number('1.') == parse('1.', rule='operand')
 
 def test_float3(parse):
-    assert Expr(Number('.1')) == parse('.1')
+    assert Number('.1') == parse('.1', rule='operand')
 
 
 def test_string(parse):
-    assert Expr(String("a'a")) == parse("'a\\'a'")
+    assert String("a'a") == parse("'a\\'a'", rule='string')
 
 def test_string2(parse):
-    assert Expr(String('a"a')) == parse('"a\\"a"')
+    assert String('a"a') == parse('"a\\"a"', rule='string')
 
 
 def test_expr_eq(parse):
