@@ -9,8 +9,16 @@ class EvalVisitor(GenericVisitor):
         left, op, right = list(vc)
         return eval('%s %s %s' % (left, op, right))
 
+    def visit_unaryop(self, node, vc):
+        op, right = list(vc)
+        return eval('%s %s' % (op, right))
+
+
     def visit_operator(self, node, vc):
         return node.value
+
+    def visit_boolean(self, node, vc):
+        return True if node.value == 'true' else False
 
     def visit_number(self, node, vc):
         return float(node.value)
