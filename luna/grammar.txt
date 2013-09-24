@@ -5,7 +5,7 @@ factor              = ( "(" ws expr ws ")" )
 binop               = factor ws op2 ws expr
 unop                = op1 ws expr
 
-operand             = boolean / nil / number / string
+operand             = boolean / nil / number / string / identifier
 op2                 = "==" / "~=" / "<" / ">" / "<=" / "=>"
                         / "+" / "-" / "*" / "/"
                         / "and" / "or"

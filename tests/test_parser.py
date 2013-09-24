@@ -188,3 +188,12 @@ def test_expr_nums3(parse_expr):
             Number('1'),
         ),
     ) == parse_expr('-1 + 1')
+
+def test_expr_nums4(parse_expr):
+    Expr(
+        BinOp(
+            Identifier('a'),
+            Operator('+'),
+            Number('1'),
+        ),
+    ) == parse_expr('a + 1')
