@@ -2,6 +2,10 @@ from luna.ast.visitors import GenericVisitor
 
 
 class EvalVisitor(GenericVisitor):
+    def visit_print(self, node, vc):
+        val = vc[0]
+        print(val)
+
     def visit_expr(self, node, vc):
         return vc[0]
 

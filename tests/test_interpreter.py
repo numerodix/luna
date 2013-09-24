@@ -25,3 +25,8 @@ def test_eval_expr5(eval_expr):
 
 def test_eval_expr6(eval_expr):
     assert False == eval_expr('not true')
+
+
+def test_print1(exec_stmt, stdout):
+    exec_stmt('print(1)')
+    assert "1.0\n" == stdout()

@@ -17,6 +17,13 @@ class Expr(ASTNode):
         self.value = value
 
 
+class Print(ASTNode):
+    _slots = ('value',)
+
+    def __init__(self, value):
+        self.value = value
+
+
 class UnaryOp(ASTNode):
     _slots = ('op', 'right')
 

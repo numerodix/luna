@@ -1,3 +1,5 @@
+stmt                = "print" "(" ws expr ws ")"
+
 expr                = binop / unop / factor
 factor              = ( "(" ws expr ws ")" )
                         / operand

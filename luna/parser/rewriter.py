@@ -9,6 +9,7 @@ from luna.ast import Identifier
 from luna.ast import Nil
 from luna.ast import Number
 from luna.ast import Operator
+from luna.ast import Print
 from luna.ast import String
 from luna.ast import UnaryOp
 
@@ -21,6 +22,10 @@ class Rewriter(NodeVisitor):
     def generic_visit(self, node, vc):
         return vc
 
+
+    def visit_stmt(self, node, vc):
+        printf, paren_open, ws, expr, ws, paren_close = vc
+        return Print(expr)
 
     def visit_expr(self, node, vc):
         return Expr(*vc)
