@@ -15,12 +15,16 @@ class Rewriter(NodeVisitor):
 
 
     def visit_program(self, node, vc):
-        return ast.Program(*vc)
+        stmt, rest = vc
+        if rest:
+            rest = [s for (semi, ws, s) in rest]
+            stmts = [stmt] + rest
+            return ast.Program(*stmts)
+        return ast.Program(stmt)
 
 
     def visit_stmt(self, node, vc):
-        [inner], ws, semi, ws = vc
-        return ast.Stmt(inner)
+        return ast.Stmt(vc[0])
 
 
     def visit_funccall(self, node, vc):

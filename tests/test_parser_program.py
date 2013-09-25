@@ -11,8 +11,27 @@ def test_prog1(parse):
         ),
     ) == parse('a = 1 + 3')
 
-def test_prog2(parse):
+
+def test_seq1(parse):
+    assert Program(
+        Stmt(Lazy()),
+        Stmt(Lazy()),
+    ) == parse('a = 1;print(a)')
+
+def test_seq2(parse):
     assert Program(
         Stmt(Lazy()),
         Stmt(Lazy()),
     ) == parse('a = 1; print(a)')
+
+def test_seq3(parse):
+    assert Program(
+        Stmt(Lazy()),
+        Stmt(Lazy()),
+    ) == parse('a = 1 ; print(a)')
+
+def test_seq4(parse):
+    assert Program(
+        Stmt(Lazy()),
+        Stmt(Lazy()),
+    ) == parse('a = 1 print(a)')

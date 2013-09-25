@@ -1,6 +1,6 @@
-program             = stmt*
+program             = stmt ( ~"(\s?;|\s)" ws stmt )*
 
-stmt                = ( funccall / assignment ) ws ( ";"* / ~"\s" ) ws
+stmt                = funccall / assignment
 
 funccall            = identifier ws "(" funcargs ")"
 funcargs            = expr ( ws "," ws expr )*
