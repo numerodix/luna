@@ -1,12 +1,4 @@
-from luna.ast import BinOp
-from luna.ast import Boolean
-from luna.ast import Expr
-from luna.ast import Identifier
-from luna.ast import Nil
-from luna.ast import Number
-from luna.ast import Operator
-from luna.ast import String
-from luna.ast import UnaryOp
+from luna.ast import *
 
 
 def test_nil(parse_operand):

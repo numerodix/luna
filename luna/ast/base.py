@@ -6,12 +6,33 @@ class ASTNode(object):
 
     # Equality
 
+    def __lenient_eq(self, a, b):
+        '''Compare a and b. If either is Lazy it will succeed.'''
+
+        if type(b) == Lazy:
+            return b == a
+
+        return a == b
+
     def __eq__(self, other):
+        # succeed early if we found Lazy, no need to recurse
+        if type(self) == Lazy or type(other) == Lazy:
+            return True
+
+        # is the type equal?
         if not self.__class__ == other.__class__:
             return False
 
-        pairs = zip([i for i in self], [i for i in other])
-        tests = [(a == b) for (a, b) in pairs]
+        my_children = [i for i in self]
+        other_children = [i for i in other]
+
+        # is child arity equal?
+        if not len(my_children) == len(other_children):
+            return False
+
+        # are the children equal?
+        pairs = zip(my_children, other_children)
+        tests = [self.__lenient_eq(a, b) for (a, b) in pairs]
         if not all(tests):
             return False
 
@@ -63,3 +84,12 @@ class ASTNode(object):
             return fmt
 
         return rec(self, 0)
+
+
+class Lazy(ASTNode):
+    '''This class is used in the place of a subgraph when we don't want
+    to specify the tree to match in full. It will always be equal
+    to whatever node it's being compared to.'''
+
+    def __eq__(self, other):
+        return True

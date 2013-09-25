@@ -2,20 +2,7 @@ import re
 
 from parsimonious.nodes import NodeVisitor
 
-from luna.ast import Assignment
-from luna.ast import Args
-from luna.ast import BinOp
-from luna.ast import Boolean
-from luna.ast import Call
-from luna.ast import Expr
-from luna.ast import Identifier
-from luna.ast import Nil
-from luna.ast import Number
-from luna.ast import Operator
-from luna.ast import Print
-from luna.ast import Stmt
-from luna.ast import String
-from luna.ast import UnaryOp
+from luna import ast
 
 
 class Rewriter(NodeVisitor):
@@ -27,30 +14,35 @@ class Rewriter(NodeVisitor):
         return vc
 
 
+    def visit_program(self, node, vc):
+        return ast.Program(*vc)
+
+
     def visit_stmt(self, node, vc):
-        return Stmt(vc[0])
+        [inner], ws, semi, ws = vc
+        return ast.Stmt(inner)
 
 
     def visit_funccall(self, node, vc):
         id, ws, paren_open, args, paren_close = vc
-        return Call(id, args)
+        return ast.Call(id, args)
 
     def visit_funcargs(self, node, vc):
         expr, rest = vc
         if rest:
             rest = [e for (ws, comma, ws, e) in rest]
             expr = [expr] + rest
-            return Args(*expr)
-        return Args(expr)
+            return ast.Args(*expr)
+        return ast.Args(expr)
 
 
     def visit_assignment(self, node, vc):
         id, ws, eq, ws, expr = vc
-        return Assignment(id, expr)
+        return ast.Assignment(id, expr)
 
 
     def visit_expr(self, node, vc):
-        return Expr(*vc)
+        return ast.Expr(*vc)
 
     def visit_factor(self, node, vc):
         args = []
@@ -70,63 +62,63 @@ class Rewriter(NodeVisitor):
         factor, ws, op, ws, expr = vc
 
         # unwrap Expr if it only has an operand
-        if type(expr.value) not in [BinOp, UnaryOp]:
+        if type(expr.value) not in [ast.BinOp, ast.UnaryOp]:
             expr = expr.value
 
         # apply operator precedence
-        elif type(expr.value) == BinOp:
+        elif type(expr.value) == ast.BinOp:
             op2 = expr.value.op
 
             if self.optable.level(op.value, 2) > self.optable.level(op2.value, 2):
-                inner = BinOp(factor, op, expr.value.left)
-                outer = BinOp(Expr(inner), op2, expr.value.right)
+                inner = ast.BinOp(factor, op, expr.value.left)
+                outer = ast.BinOp(ast.Expr(inner), op2, expr.value.right)
                 return outer
 
-        return BinOp(factor, op, expr)
+        return ast.BinOp(factor, op, expr)
 
     def visit_unop(self, node, vc):
         op, ws, expr = vc
 
         # unwrap Expr if it only has one value
-        if type(expr.value) not in [BinOp, UnaryOp]:
+        if type(expr.value) not in [ast.BinOp, ast.UnaryOp]:
             expr = expr.value
 
         # apply operator precedence
-        elif type(expr.value) == BinOp:
+        elif type(expr.value) == ast.BinOp:
             op2 = expr.value.op
 
             if self.optable.level(op.value, 1) > self.optable.level(op2.value, 2):
-                inner = UnaryOp(op, expr.value.left)
-                outer = BinOp(Expr(inner), op2, expr.value.right)
+                inner = ast.UnaryOp(op, expr.value.left)
+                outer = ast.BinOp(ast.Expr(inner), op2, expr.value.right)
                 return outer
 
-        return UnaryOp(op, expr)
+        return ast.UnaryOp(op, expr)
 
 
     def visit_op1(self, node, vc):
-        return Operator(node.text)
+        return ast.Operator(node.text)
 
     def visit_op2(self, node, vc):
-        return Operator(node.text)
+        return ast.Operator(node.text)
 
     def visit_operand(self, node, vc):
         return vc[0]
 
 
     def visit_boolean(self, node, vc):
-        return Boolean(node.text)
+        return ast.Boolean(node.text)
 
     def visit_identifier(self, node, vc):
-        return Identifier(node.text)
+        return ast.Identifier(node.text)
 
     def visit_nil(self, node, vc):
-        return Nil()
+        return ast.Nil()
 
     def visit_number(self, node, vc):
-        return Number(node.text)
+        return ast.Number(node.text)
 
     def visit_string(self, node, vc):
         s = node.text[1:-1]
         s = s.replace('\\"', '"')
         s = s.replace("\\'", "'")
-        return String(s)
+        return ast.String(s)

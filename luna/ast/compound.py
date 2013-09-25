@@ -40,11 +40,11 @@ class Expr(ASTNode):
         self.value = value
 
 
-class Print(ASTNode):
-    _slots = ('value',)
+class Program(ASTNode):
+    _slots = ('values',)
 
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, *values):
+        self.values = values
 
 
 class Stmt(ASTNode):
