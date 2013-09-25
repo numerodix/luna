@@ -1,4 +1,9 @@
-stmt                = "print" "(" ws expr ws ")" ws
+stmt                = funccall / assignment
+
+funccall            = identifier ws "(" funcargs ")"
+funcargs            = expr ( ws "," ws expr )*
+
+assignment          = identifier ws "=" ws expr
 
 expr                = binop / unop / factor
 factor              = ( "(" ws expr ws ")" )

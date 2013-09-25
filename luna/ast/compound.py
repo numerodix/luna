@@ -1,6 +1,21 @@
 from luna.ast.base import ASTNode
 
 
+class Args(ASTNode):
+    _slots = ('values',)
+
+    def __init__(self, *values):
+        self.values = values
+
+
+class Assignment(ASTNode):
+    _slots = ('identifier', 'expr')
+
+    def __init__(self, identifier, expr):
+        self.identifier = identifier
+        self.expr = expr
+
+
 class BinOp(ASTNode):
     _slots = ('left', 'op', 'right')
 
@@ -8,6 +23,14 @@ class BinOp(ASTNode):
         self.left = left
         self.op = op
         self.right = right
+
+
+class Call(ASTNode):
+    _slots = ('identifier', 'expr')
+
+    def __init__(self, identifier, expr):
+        self.identifier = identifier
+        self.expr = expr
 
 
 class Expr(ASTNode):
@@ -18,6 +41,13 @@ class Expr(ASTNode):
 
 
 class Print(ASTNode):
+    _slots = ('value',)
+
+    def __init__(self, value):
+        self.value = value
+
+
+class Stmt(ASTNode):
     _slots = ('value',)
 
     def __init__(self, value):

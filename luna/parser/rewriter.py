@@ -2,14 +2,18 @@ import re
 
 from parsimonious.nodes import NodeVisitor
 
+from luna.ast import Assignment
+from luna.ast import Args
 from luna.ast import BinOp
 from luna.ast import Boolean
+from luna.ast import Call
 from luna.ast import Expr
 from luna.ast import Identifier
 from luna.ast import Nil
 from luna.ast import Number
 from luna.ast import Operator
 from luna.ast import Print
+from luna.ast import Stmt
 from luna.ast import String
 from luna.ast import UnaryOp
 
@@ -24,8 +28,26 @@ class Rewriter(NodeVisitor):
 
 
     def visit_stmt(self, node, vc):
-        printf, paren_open, ws, expr, ws, paren_close, ws = vc
-        return Print(expr)
+        return Stmt(vc[0])
+
+
+    def visit_funccall(self, node, vc):
+        id, ws, paren_open, args, paren_close = vc
+        return Call(id, args)
+
+    def visit_funcargs(self, node, vc):
+        expr, rest = vc
+        if rest:
+            rest = [e for (ws, comma, ws, e) in rest]
+            expr = [expr] + rest
+            return Args(*expr)
+        return Args(expr)
+
+
+    def visit_assignment(self, node, vc):
+        id, ws, eq, ws, expr = vc
+        return Assignment(id, expr)
+
 
     def visit_expr(self, node, vc):
         return Expr(*vc)
