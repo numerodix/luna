@@ -1,4 +1,4 @@
-program             = stmt ( ~"(\s?;|\s)" ws stmt )*
+program             = stmt ( ~"(\s*;|\s)" ws stmt )* newline?
 
 stmt                = funccall / assignment
 
@@ -31,4 +31,5 @@ identifier          = ~"[_a-zA-Z][_a-zA-Z0-9]*"
 boolean             = "true" / "false"
 nil                 = "nil"
 
+newline             = "\n"
 ws                  = ~"\s*"

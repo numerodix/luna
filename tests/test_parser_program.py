@@ -34,4 +34,10 @@ def test_seq4(parse):
     assert Program(
         Stmt(Lazy()),
         Stmt(Lazy()),
+    ) == parse('a = 1  ; print(a)')
+
+def test_seq5(parse):
+    assert Program(
+        Stmt(Lazy()),
+        Stmt(Lazy()),
     ) == parse('a = 1 print(a)')

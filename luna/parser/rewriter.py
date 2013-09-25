@@ -15,7 +15,7 @@ class Rewriter(NodeVisitor):
 
 
     def visit_program(self, node, vc):
-        stmt, rest = vc
+        stmt, rest, newline = vc
         if rest:
             rest = [s for (semi, ws, s) in rest]
             stmts = [stmt] + rest
