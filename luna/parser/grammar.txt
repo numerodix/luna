@@ -1,6 +1,15 @@
-program             = stmt ( ~"(\s*;|\s)" ws stmt )* newline?
+program             = block newline?
 
+block               = stmt ( ~"(\s*;|\s)" ws stmt )*
 stmt                = funccall / assignment
+                        / if / while / repeat
+
+while               = "while" ws expr ws "do" ws block ws "end"
+repeat              = "repeat" ws block ws "until" ws expr
+
+if                  = "if" ws expr ws "then" ws block ws
+                        ( "elseif" ws expr ws "then" ws block ws )*
+                        ( "else" ws block ws )? "end"
 
 funccall            = identifier ws "(" funcargs ")"
 funcargs            = expr ( ws "," ws expr )*

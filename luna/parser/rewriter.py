@@ -15,17 +15,51 @@ class Rewriter(NodeVisitor):
 
 
     def visit_program(self, node, vc):
-        stmt, rest, newline = vc
+        block, newline = vc
+        return ast.Program(block)
+
+
+    def visit_block(self, node, vc):
+        stmt, rest = vc
         if rest:
             rest = [s for (semi, ws, s) in rest]
             stmts = [stmt] + rest
-            return ast.Program(*stmts)
-        return ast.Program(stmt)
-
+            return ast.Block(*stmts)
+        return ast.Block(stmt)
 
     def visit_stmt(self, node, vc):
         return ast.Stmt(vc[0])
 
+
+    def visit_if(self, node, vc):
+        ifkw, ws, expr, ws, thenkw, ws, thenblock, ws, elifblocks, elseblock, end = vc
+
+        if elseblock:
+            elsekw, ws, elseblock, ws = elseblock[0]
+        else:
+            elseblock = None
+
+        if elifblocks:
+            elifblocks = [(e, b) for (elseifkw, ws, e, ws, thenkw, ws, b, ws)
+                          in elifblocks]
+            elifblocks.reverse()
+
+            ex, th = elifblocks[0]
+            inner_if = ast.If(ex, th, elseblock)
+            for (ex, th) in elifblocks[1:]:
+                inner_if = ast.If(ex, th, inner_if)
+
+            elseblock = inner_if
+
+        return ast.If(expr, thenblock, elseblock)
+
+    def visit_repeat(self, node, vc):
+        repeat, ws, block, ws, until, ws, expr = vc
+        return ast.Repeat(block, expr)
+
+    def visit_while(self, node, vc):
+        whil, ws, expr, ws, do, ws, block, ws, end = vc
+        return ast.While(expr, block)
 
     def visit_funccall(self, node, vc):
         id, ws, paren_open, args, paren_close = vc

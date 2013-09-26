@@ -25,6 +25,13 @@ class BinOp(ASTNode):
         self.right = right
 
 
+class Block(ASTNode):
+    _slots = ('values',)
+
+    def __init__(self, *values):
+        self.values = values
+
+
 class Call(ASTNode):
     _slots = ('identifier', 'expr')
 
@@ -40,11 +47,28 @@ class Expr(ASTNode):
         self.value = value
 
 
+class If(ASTNode):
+    _slots = ('pred', 'thenblock', 'elseblock')
+
+    def __init__(self, pred, thenblock, elseblock):
+        self.pred = pred
+        self.thenblock = thenblock
+        self.elseblock = elseblock
+
+
 class Program(ASTNode):
     _slots = ('values',)
 
     def __init__(self, *values):
         self.values = values
+
+
+class Repeat(ASTNode):
+    _slots = ('block', 'expr')
+
+    def __init__(self, block, expr):
+        self.block = block
+        self.expr = expr
 
 
 class Stmt(ASTNode):
@@ -60,3 +84,11 @@ class UnaryOp(ASTNode):
     def __init__(self, op, right):
         self.op = op
         self.right = right
+
+
+class While(ASTNode):
+    _slots = ('expr', 'block')
+
+    def __init__(self, expr, block):
+        self.expr = expr
+        self.block = block

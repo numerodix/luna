@@ -29,3 +29,65 @@ def test_call1(parse_stmt):
             ),
         ),
     ) == parse_stmt('f(1, 2, 3)')
+
+
+def test_if1(parse_stmt):
+    assert Stmt(
+        If(
+            Expr(Lazy()),
+            Block(Lazy()),
+            None,
+        ),
+    ) == parse_stmt('if true then print(x) end')
+
+def test_if2(parse_stmt):
+    assert Stmt(
+        If(
+            Expr(Lazy()),
+            Block(Lazy()),
+            Block(Lazy()),
+        ),
+    ) == parse_stmt('if true then print(1) else print(2) end')
+
+def test_if3(parse_stmt):
+    assert Stmt(
+        If(
+            Expr(Lazy()),
+            Block(Lazy()),
+            If(
+                Expr(Lazy()),
+                Block(Lazy()),
+                If(
+                    Expr(Lazy()),
+                    Block(Lazy()),
+                    None,
+                ),
+            ),
+        ),
+    ) == parse_stmt('''if true then print(1)
+                    elseif true then print(2)
+                    elseif false then print(3)
+                    end''')
+
+
+# broken
+def test_repeat1(parse_stmt):
+    assert Stmt(
+        Repeat(
+            Block(
+                Stmt(Lazy()),
+            ),
+            Expr(Lazy()),
+        ),
+    ) == parse_stmt('repeat print(1) until true')
+
+
+def test_while1(parse_stmt):
+    assert Stmt(
+        While(
+            Expr(Lazy()),
+            Block(
+                Stmt(Lazy()),
+            ),
+        ),
+    ) == parse_stmt('while true do print(1) end')
