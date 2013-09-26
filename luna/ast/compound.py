@@ -47,6 +47,15 @@ class Expr(ASTNode):
         self.value = value
 
 
+class Foreach(ASTNode):
+    _slots = ('vars', 'exprs', 'block')
+
+    def __init__(self, vars, exprs, block):
+        self.vars = vars
+        self.exprs = exprs
+        self.block = block
+
+
 class If(ASTNode):
     _slots = ('pred', 'thenblock', 'elseblock')
 

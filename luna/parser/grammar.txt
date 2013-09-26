@@ -2,7 +2,14 @@ program             = block newline?
 
 block               = stmt ( ~"(\s*;|\s)" ws stmt )*
 stmt                = funccall / assignment
-                        / if / while / repeat
+                        / if / while / repeat / foreach
+
+for                 = "for" ws identifier ws "=" ws expr ws "," ws
+                        expr ws ( "," ws expr )? ws
+                        "do" ws block ws "end"
+foreach             = "for" ws identifier ( ws "," ws identifier )* ws
+                        "in" ws expr ( ws "," ws expr)* ws
+                        "do" ws block ws "end"
 
 while               = "while" ws expr ws "do" ws block ws "end"
 repeat              = "repeat" ws block ws "until" ws expr

@@ -71,6 +71,22 @@ def test_if3(parse_stmt, parse_expr):
                     end''')
 
 
+def test_foreach1(parse_stmt):
+    assert Stmt(
+        Foreach(
+            [
+                Identifier('i'),
+                Identifier('j'),
+            ],
+            [
+                Expr(Boolean('true')),
+                Expr(Boolean('false')),
+            ],
+            Block(parse_stmt('print(i)')),
+        ),
+    ) == parse_stmt('for i,j in true,false do print(i) end')
+
+
 def test_repeat1(parse_stmt):
     assert Stmt(
         Repeat(

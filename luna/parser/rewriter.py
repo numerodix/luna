@@ -52,6 +52,21 @@ class Rewriter(NodeVisitor):
 
         return ast.If(expr, thenblock, elseblock)
 
+    def visit_foreach(self, node, vc):
+        [forkw, ws, id, ids, ws,
+         inkw, ws, expr, exprs, ws,
+         dokw, ws, block, ws, endkw] = vc
+
+        if ids:
+            ids = [i for (ws, comma, ws, i) in ids]
+            ids = [id] + ids
+
+        if exprs:
+            exprs = [e for (ws, comma, ws, e) in exprs]
+            exprs = [expr] + exprs
+
+        return ast.Foreach(ids, exprs, block)
+
     def visit_repeat(self, node, vc):
         repeat, ws, block, ws, until, ws, expr = vc
         return ast.Repeat(block, expr)
