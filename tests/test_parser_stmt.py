@@ -31,19 +31,19 @@ def test_call1(parse_stmt):
     ) == parse_stmt('f(1, 2, 3)')
 
 
-def test_if1(parse_stmt):
+def test_if1(parse_stmt, parse_expr):
     assert Stmt(
         If(
-            Expr(Lazy()),
-            Block(Lazy()),
+            parse_expr('true'),
+            Block(parse_stmt('print(x)')),
             None,
         ),
     ) == parse_stmt('if true then print(x) end')
 
-def test_if2(parse_stmt):
+def test_if2(parse_stmt, parse_expr):
     assert Stmt(
         If(
-            Expr(Lazy()),
+            parse_expr('true'),
             Block(parse_stmt('print(1)')),
             Block(parse_stmt('print(2)')),
         ),
