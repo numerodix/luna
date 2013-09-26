@@ -71,7 +71,6 @@ def test_if3(parse_stmt, parse_expr):
                     end''')
 
 
-# broken
 def test_repeat1(parse_stmt):
     assert Stmt(
         Repeat(
