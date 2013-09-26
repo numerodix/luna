@@ -44,9 +44,8 @@ class Rewriter(NodeVisitor):
                           in elifblocks]
             elifblocks.reverse()
 
-            ex, th = elifblocks[0]
-            inner_if = ast.If(ex, th, elseblock)
-            for (ex, th) in elifblocks[1:]:
+            inner_if = elseblock
+            for (ex, th) in elifblocks:
                 inner_if = ast.If(ex, th, inner_if)
 
             elseblock = inner_if

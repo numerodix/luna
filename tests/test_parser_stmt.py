@@ -44,29 +44,30 @@ def test_if2(parse_stmt):
     assert Stmt(
         If(
             Expr(Lazy()),
-            Block(Lazy()),
-            Block(Lazy()),
+            Block(parse_stmt('print(1)')),
+            Block(parse_stmt('print(2)')),
         ),
     ) == parse_stmt('if true then print(1) else print(2) end')
 
-def test_if3(parse_stmt):
+def test_if3(parse_stmt, parse_expr):
     assert Stmt(
         If(
-            Expr(Lazy()),
-            Block(Lazy()),
+            parse_expr('true'),
+            Block(parse_stmt('print(1)')),
             If(
-                Expr(Lazy()),
-                Block(Lazy()),
+                parse_expr('true'),
+                Block(parse_stmt('print(2)')),
                 If(
-                    Expr(Lazy()),
-                    Block(Lazy()),
-                    None,
+                    parse_expr('false'),
+                    Block(parse_stmt('print(3)')),
+                    Block(parse_stmt('print(4)')),
                 ),
             ),
         ),
     ) == parse_stmt('''if true then print(1)
                     elseif true then print(2)
                     elseif false then print(3)
+                    else print(4)
                     end''')
 
 
