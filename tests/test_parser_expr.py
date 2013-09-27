@@ -141,7 +141,7 @@ def test_expr_nums2(parse_expr):
     ) == parse_expr('1 + 2 * 3')
 
 def test_expr_nums3(parse_expr):
-    Expr(
+    assert Expr(
         BinOp(
             Expr(
                 UnaryOp(
@@ -155,10 +155,19 @@ def test_expr_nums3(parse_expr):
     ) == parse_expr('-1 + 1')
 
 def test_expr_nums4(parse_expr):
-    Expr(
+    assert Expr(
         BinOp(
             Identifier('a'),
             Operator('+'),
             Number('1'),
         ),
     ) == parse_expr('a + 1')
+
+
+def test_expr_call1(parse_expr):
+    assert Expr(
+        Call(
+            Identifier('print'),
+            Args(Lazy()),
+        ),
+    ) == parse_expr('print(x)')
