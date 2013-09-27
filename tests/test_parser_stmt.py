@@ -126,10 +126,11 @@ def test_funcdef2(parse_stmt, parse_expr):
             [
                 parse_expr('x'),
                 parse_expr('y'),
+                parse_expr('z'),
             ],
             Block(parse_stmt('print(x)')),
         ),
-    ) == parse_stmt('function try (x, y) print(x) end')
+    ) == parse_stmt('function try (x, y, z) print(x) end')
 
 
 def test_repeat1(parse_stmt):
