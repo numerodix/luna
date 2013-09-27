@@ -47,6 +47,17 @@ class Expr(ASTNode):
         self.value = value
 
 
+class For(ASTNode):
+    _slots = ('var', 'low', 'high', 'step', 'block',)
+
+    def __init__(self, var, low, high, step, block):
+        self.var = var
+        self.low = low
+        self.high = high
+        self.step = step
+        self.block = block
+
+
 class Foreach(ASTNode):
     _slots = ('vars', 'exprs', 'block')
 

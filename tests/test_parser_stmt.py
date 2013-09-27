@@ -71,6 +71,29 @@ def test_if3(parse_stmt, parse_expr):
                     end''')
 
 
+def test_for1(parse_stmt, parse_expr):
+    assert Stmt(
+        For(
+            Identifier('i'),
+            parse_expr('0'),
+            parse_expr('10'),
+            None,
+            Block(parse_stmt('print(i)')),
+        ),
+    ) == parse_stmt('for i = 0, 10 do print(i) end')
+
+def test_for2(parse_stmt, parse_expr):
+    assert Stmt(
+        For(
+            Identifier('i'),
+            parse_expr('0'),
+            parse_expr('10'),
+            parse_expr('1'),
+            Block(parse_stmt('print(i)')),
+        ),
+    ) == parse_stmt('for i = 0, 10, 1 do print(i) end')
+
+
 def test_foreach1(parse_stmt):
     assert Stmt(
         Foreach(
