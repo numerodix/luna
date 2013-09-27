@@ -110,6 +110,10 @@ def test_foreach1(parse_stmt):
     ) == parse_stmt('for i,j in true,false do print(i) end')
 
 
+def test_funcdef1(parse_stmt):
+    parse_stmt('function try () print(x) end')
+
+
 def test_repeat1(parse_stmt):
     assert Stmt(
         Repeat(

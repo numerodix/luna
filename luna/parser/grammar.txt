@@ -1,7 +1,7 @@
 program             = block newline?
 
 block               = stmt ( ~"(\s*;|\s)" ws stmt )*
-stmt                = funccall / assignment
+stmt                = funccall / assignment / funcdef
                         / if / while / repeat / foreach / for
 
 for                 = "for" ws identifier ws "=" ws
@@ -18,6 +18,10 @@ if                  = "if" ws expr ws "then" ws block ws
                         ( "elseif" ws expr ws "then" ws block ws )*
                         ( "else" ws block ws )? "end"
 
+funcdef             = "function" ws identifier ws
+                        "(" ws funcparams? ws ")" ws
+                        block ws "end"
+funcparams          = expr ( ws "," expr ws )*
 funccall            = identifier ws "(" funcargs ")"
 funcargs            = expr ( ws "," ws expr )*
 
