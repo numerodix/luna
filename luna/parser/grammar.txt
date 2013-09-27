@@ -25,7 +25,7 @@ funcdef             = "function" ws identifier ws
                         "(" ws funcparams? ws ")" ws
                         block ws "end"
 funcparams          = expr ( ws "," ws expr )*
-funccall            = identifier ws "(" ws funcargs ws ")"
+funccall            = identifier ws "(" ws funcargs? ws ")"
 funcargs            = expr ( ws "," ws expr )*
 
 assignment          = identifier ws "=" ws expr
