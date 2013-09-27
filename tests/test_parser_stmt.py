@@ -111,7 +111,25 @@ def test_foreach1(parse_stmt):
 
 
 def test_funcdef1(parse_stmt):
-    parse_stmt('function try () print(x) end')
+    assert Stmt(
+        Funcdef(
+            Identifier('try'),
+            None,
+            Block(parse_stmt('print(x)')),
+        ),
+    ) == parse_stmt('function try () print(x) end')
+
+def test_funcdef2(parse_stmt, parse_expr):
+    assert Stmt(
+        Funcdef(
+            Identifier('try'),
+            [
+                parse_expr('x'),
+                parse_expr('y'),
+            ],
+            Block(parse_stmt('print(x)')),
+        ),
+    ) == parse_stmt('function try (x, y) print(x) end')
 
 
 def test_repeat1(parse_stmt):

@@ -79,6 +79,26 @@ class Rewriter(NodeVisitor):
 
         return ast.Foreach(ids, exprs, block)
 
+    def visit_funcdef(self, node, vc):
+        [funkw, ws, name, ws,
+         paren, ws, params, ws, paren, ws,
+         block, ws, endkw] = vc
+
+        if params:
+            params = params[0]
+        else:
+            params = None
+
+        return ast.Funcdef(name, params, block)
+
+    def visit_funcparams(self, node, vc):
+        expr, rest = vc
+        if rest:
+            rest = [e for (ws, comma, ws, e) in rest]
+            expr = [expr] + rest
+            return expr
+        return [expr]
+
     def visit_repeat(self, node, vc):
         repeat, ws, block, ws, until, ws, expr = vc
         return ast.Repeat(block, expr)

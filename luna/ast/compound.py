@@ -67,6 +67,15 @@ class Foreach(ASTNode):
         self.block = block
 
 
+class Funcdef(ASTNode):
+    _slots = ('name', 'params', 'block')
+
+    def __init__(self, name, params, block):
+        self.name = name
+        self.params = params
+        self.block = block
+
+
 class If(ASTNode):
     _slots = ('pred', 'thenblock', 'elseblock')
 

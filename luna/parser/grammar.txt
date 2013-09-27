@@ -21,7 +21,7 @@ if                  = "if" ws expr ws "then" ws block ws
 funcdef             = "function" ws identifier ws
                         "(" ws funcparams? ws ")" ws
                         block ws "end"
-funcparams          = expr ( ws "," expr ws )*
+funcparams          = expr ( ws "," ws expr )*
 funccall            = identifier ws "(" funcargs ")"
 funcargs            = expr ( ws "," ws expr )*
 
