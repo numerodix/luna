@@ -3,7 +3,7 @@ import functools
 import pytest
 
 from luna.parser import Parser
-from luna.interpreter import EvalVisitor
+from luna.interpreter import interpret
 
 
 @pytest.fixture(scope='function')
@@ -15,18 +15,16 @@ def stdout(capsys):
 
 @pytest.fixture(scope='module')
 def exec_stmt(parse_stmt):
-    visitor = EvalVisitor()
     def do(program):
         node = parse_stmt(program)
-        return visitor.visit(node)
+        return interpret(node)
     return do
 
 @pytest.fixture(scope='module')
 def eval_expr(parse_expr):
-    visitor = EvalVisitor()
     def do(program):
         node = parse_expr(program)
-        return visitor.visit(node)
+        return interpret(node)
     return do
 
 
