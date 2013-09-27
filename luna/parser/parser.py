@@ -69,8 +69,4 @@ if __name__ == '__main__':
     parser = Parser()
     tree = parser.parse(content)
 
-    if args.dump:
-        util.write(tree.pp())
-    else:
-        pp = prettyprinter.PP()
-        util.write(pp.visit(tree))
+    util.write(tree.pp())
