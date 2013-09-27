@@ -12,8 +12,15 @@ class EvalVisitor(GenericVisitor):
 
     def visit_call(self, node, vc):
         func, arg = vc
-        if type(arg) == ast.ASTNode:
+
+        # if it's coming from the env it's not eval'd yet
+        if isinstance(arg, ast.ASTNode):
             arg = self.visit(arg)
+
+        # print float as int if it's an int
+        if type(arg) == float and arg == int(arg):
+            arg = int(arg)
+
         return func(arg)
 
     def visit_expr(self, node, vc):
