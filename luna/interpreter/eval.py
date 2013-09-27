@@ -7,7 +7,9 @@ class EvalVisitor(GenericVisitor):
         self.env = env
 
     def generic_visit(self, node, vc):
-        return vc[0]
+        if vc:
+            vc = vc[0]
+        return vc
 
 
     def visit_expr(self, node, vc):
@@ -24,7 +26,8 @@ class EvalVisitor(GenericVisitor):
         if type(arg) == float and arg == int(arg):
             arg = int(arg)
 
-        return func(arg)
+        if callable(func):
+            return func(arg)
 
     def visit_binop(self, node, vc):
         left, op, right = list(vc)

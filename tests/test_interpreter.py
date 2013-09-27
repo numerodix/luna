@@ -42,4 +42,7 @@ def test_assign_print(run_program, stdout):
 
 def test_print_number(run_program, stdout):
     run_program('print-number.lua')
-    assert "7\n" == stdout()
+
+def test_two_funcs(run_program, stdout):
+    run_program('two-funcs.lua')
+    assert "3\n3\n" == stdout()

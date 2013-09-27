@@ -1,11 +1,12 @@
 z = 3
 
-function add(x, y)
-    return x + y * z
+function show_z()
+    print(z)
 end
 
 function main()
-    print(add(1, 2))
+    print(1 + 2)
 end
 
+show_z()
 main()
