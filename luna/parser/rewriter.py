@@ -113,7 +113,7 @@ class Rewriter(NodeVisitor):
 
     def visit_funccall(self, node, vc):
         id, ws, paren_open, ws, args, ws, paren_close = vc
-        return ast.Call(id, args)
+        return ast.Call(id, args[0])
 
     def visit_funcargs(self, node, vc):
         expr, rest = vc
