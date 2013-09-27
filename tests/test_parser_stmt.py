@@ -36,7 +36,7 @@ def test_if1(parse_stmt, parse_expr):
         If(
             parse_expr('true'),
             Block(parse_stmt('print(x)')),
-            None,
+            Empty(),
         ),
     ) == parse_stmt('if true then print(x) end')
 
@@ -77,7 +77,7 @@ def test_for1(parse_stmt, parse_expr):
             Identifier('i'),
             parse_expr('0'),
             parse_expr('10'),
-            None,
+            Empty(),
             Block(parse_stmt('print(i)')),
         ),
     ) == parse_stmt('for i = 0, 10 do print(i) end')
@@ -114,7 +114,7 @@ def test_funcdef1(parse_stmt):
     assert Stmt(
         Funcdef(
             Identifier('try'),
-            None,
+            Empty(),
             Block(parse_stmt('print(x)')),
         ),
     ) == parse_stmt('function try () print(x) end')

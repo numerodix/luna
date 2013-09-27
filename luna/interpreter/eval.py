@@ -10,6 +10,9 @@ class EvalVisitor(GenericVisitor):
         return vc[0]
 
 
+    def visit_expr(self, node, vc):
+        return vc[0]
+
     def visit_call(self, node, vc):
         func, arg = vc
 
@@ -22,9 +25,6 @@ class EvalVisitor(GenericVisitor):
             arg = int(arg)
 
         return func(arg)
-
-    def visit_expr(self, node, vc):
-        return vc[0]
 
     def visit_binop(self, node, vc):
         left, op, right = list(vc)

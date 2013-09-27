@@ -37,7 +37,7 @@ class Rewriter(NodeVisitor):
         if elseblock:
             elsekw, ws, elseblock, ws = elseblock[0]
         else:
-            elseblock = None
+            elseblock = ast.Empty()
 
         if elifblocks:
             elifblocks = [(e, b) for (elseifkw, ws, e, ws, thenkw, ws, b, ws)
@@ -60,7 +60,7 @@ class Rewriter(NodeVisitor):
         if step:
             comma, ws, step, ws = step[0]
         else:
-            step = None
+            step = ast.Empty()
 
         return ast.For(id, low, high, step, block)
 
@@ -87,7 +87,7 @@ class Rewriter(NodeVisitor):
         if params:
             params = params[0]
         else:
-            params = None
+            params = ast.Empty()
 
         return ast.Funcdef(name, params, block)
 

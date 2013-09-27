@@ -93,3 +93,7 @@ class Lazy(ASTNode):
 
     def __eq__(self, other):
         return True
+
+
+class Empty(ASTNode):
+    _slots = tuple()
