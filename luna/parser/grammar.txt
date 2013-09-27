@@ -42,10 +42,7 @@ op2                 = "==" / "~=" / "<" / ">" / "<=" / "=>"
                         / "+" / "-" / "*" / "/"
                         / "and" / "or"
 op1                 = "-" / "not"
-keyword             = "break" / "do" / "else" / "elseif" / "end"
-                        / "for" / "function" / "goto" / "if" / "in"
-                        / "local" / "repeat" / "return"
-                        / "then" / "until" / "while"
+keyword             = "break" / "goto" / "local"
 
 string              = ( "'" ( "\\'" / ~"[^']" )* "'" )
                         / ( '"' ( '\\"' / ~'[^"]' )* '"' )
