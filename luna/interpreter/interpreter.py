@@ -2,9 +2,12 @@ from luna.ast.visitors import GenericVisitor
 
 
 class EvalVisitor(GenericVisitor):
-    def visit_print(self, node, vc):
-        val = vc[0]
-        print(val)
+    def generic_visit(self, node, vc):
+        return vc[0]
+
+    def visit_call(self, node, vc):
+        func, arg = vc
+        return func(arg)
 
     def visit_expr(self, node, vc):
         return vc[0]
@@ -23,6 +26,10 @@ class EvalVisitor(GenericVisitor):
 
     def visit_boolean(self, node, vc):
         return True if node.value == 'true' else False
+
+    def visit_identifier(self, node, vc):
+        [id] = vc
+        return print if id == 'print' else None
 
     def visit_nil(self, node, vc):
         return None
