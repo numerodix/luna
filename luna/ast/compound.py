@@ -100,6 +100,13 @@ class Repeat(ASTNode):
         self.expr = expr
 
 
+class Return(ASTNode):
+    _slots = ('expr',)
+
+    def __init__(self, expr):
+        self.expr = expr
+
+
 class Stmt(ASTNode):
     _slots = ('value',)
 

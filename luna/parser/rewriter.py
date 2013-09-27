@@ -103,6 +103,10 @@ class Rewriter(NodeVisitor):
         repeat, ws, block, ws, until, ws, expr = vc
         return ast.Repeat(block, expr)
 
+    def visit_return(self, node, vc):
+        retkw, ws, expr = vc
+        return ast.Return(expr)
+
     def visit_while(self, node, vc):
         whil, ws, expr, ws, do, ws, block, ws, end = vc
         return ast.While(expr, block)

@@ -144,6 +144,16 @@ def test_repeat1(parse_stmt):
     ) == parse_stmt('repeat print(1) until true')
 
 
+def test_return1(parse_stmt):
+    assert Stmt(
+        Return(
+            Expr(
+                Number('1'),
+            ),
+        ),
+    ) == parse_stmt('return 1')
+
+
 def test_while1(parse_stmt):
     assert Stmt(
         While(
