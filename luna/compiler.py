@@ -9,6 +9,11 @@ class Compiler(GenericVisitor):
         self.code = []
         self.consts = []
 
+        self.binops = {
+            '+': ops.BinaryAdd,
+            '-': ops.BinarySubtract,
+        }
+
     def compile(self, node):
         self.visit(node)
         return Frame(self.code, self.consts)
@@ -38,18 +43,20 @@ class Compiler(GenericVisitor):
         self.emit(ops.StoreName())
 
     def visit_binop(self, node, vc):
-        left, o, right = vc
+        left, op, right = vc
         i = self.add_const(left)
         j = self.add_const(right)
         self.emit(ops.LoadConst(i))
         self.emit(ops.LoadConst(j))
-        self.emit(ops.BinaryAdd())
+
+        opclass = self.binops[op[0]]
+        self.emit(opclass())
 
     def visit_call(self, node, vc):
         func, [[args]] = vc
+        # how to handle multiple args?
         i = self.add_const(func)
         self.emit(ops.LoadConst(i))
-        # how to handle multiple args?
         for arg in args:
             j = self.add_const(arg)
             self.emit(ops.LoadConst(j))

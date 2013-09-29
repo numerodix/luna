@@ -43,6 +43,9 @@ class OpCode(object):
 class BinaryAdd(OpCode):
     pass
 
+class BinarySubtract(OpCode):
+    pass
+
 class Call(OpCode):
     pass
 
