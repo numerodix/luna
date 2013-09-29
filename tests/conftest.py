@@ -6,7 +6,6 @@ import pytest
 
 from luna import util
 from luna.compiler import Compiler
-from luna.interpreter import interpret
 from luna.parser import Parser
 
 
@@ -77,30 +76,6 @@ def interp_expr(compile_expr):
     def do(program):
         frame = compile_expr(program)
         return frame.run()
-    return do
-
-
-# old
-@pytest.fixture(scope='module')
-def run_program(load_program, parse_program):
-    def do(filepath):
-        content = load_program(filepath)
-        node = parse_program(content)
-        return interpret(node)
-    return do
-
-@pytest.fixture(scope='module')
-def exec_stmt(parse_stmt):
-    def do(program):
-        node = parse_stmt(program)
-        return interpret(node)
-    return do
-
-@pytest.fixture(scope='module')
-def eval_expr(parse_expr):
-    def do(program):
-        node = parse_expr(program)
-        return interpret(node)
     return do
 
 
