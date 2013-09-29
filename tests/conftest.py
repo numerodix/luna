@@ -5,9 +5,12 @@ import functools
 import pytest
 
 from luna import util
+from luna.compiler import Compiler
 from luna.interpreter import interpret
 from luna.parser import Parser
 
+
+# Fixtures
 
 @pytest.fixture(scope='function')
 def stdout(capsys):
@@ -25,6 +28,19 @@ def load_program():
         return content
     return do
 
+
+# Compilation
+
+@pytest.fixture(scope='function')
+def compile_expr(parse_expr):
+    def do(program):
+        tree = parse_expr(program)
+        compiler = Compiler()
+        return compiler.compile(tree)
+    return do
+
+
+# Interpretation
 
 @pytest.fixture(scope='module')
 def run_program(load_program, parse):
@@ -48,6 +64,8 @@ def eval_expr(parse_expr):
         return interpret(node)
     return do
 
+
+# Parsing
 
 @pytest.fixture(scope='module')
 def parse():
