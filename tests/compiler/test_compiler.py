@@ -11,7 +11,7 @@ def test_ass1(compile_stmt):
         ops.StoreName(),
     ]
     assert frame.consts == [
-        obj.LString('a'),
+        obj.LVar('a'),
         obj.LNumber(1.0),
     ]
 
@@ -39,6 +39,6 @@ def test_call1(compile_stmt):
         ops.Call(),
     ]
     assert frame.consts == [
-        obj.LString('print'),
+        obj.LVar('print'),
         obj.LNumber(1.0),
     ]

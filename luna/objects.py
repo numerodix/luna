@@ -72,3 +72,13 @@ class LString(LuaValue):
 
     def __hash__(self):
         return hash(self.value)
+
+
+class LVar(LuaValue):
+    _slots = ('value',)
+
+    def __init__(self, value):
+        self.value = value
+
+    def __hash__(self):
+        return hash(self.value)

@@ -32,9 +32,9 @@ def load_program():
 # Compilation
 
 @pytest.fixture(scope='function')
-def compile_expr(parse_expr):
+def compile_program(parse_program):
     def do(program):
-        tree = parse_expr(program)
+        tree = parse_program(program)
         compiler = Compiler()
         return compiler.compile(tree)
     return do
@@ -47,13 +47,21 @@ def compile_stmt(parse_stmt):
         return compiler.compile(tree)
     return do
 
+@pytest.fixture(scope='function')
+def compile_expr(parse_expr):
+    def do(program):
+        tree = parse_expr(program)
+        compiler = Compiler()
+        return compiler.compile(tree)
+    return do
+
 
 # Interpretation
 
 @pytest.fixture(scope='function')
-def interp_expr(compile_expr):
+def interp_program(compile_program):
     def do(program):
-        frame = compile_expr(program)
+        frame = compile_program(program)
         return frame.run()
     return do
 
@@ -61,6 +69,13 @@ def interp_expr(compile_expr):
 def interp_stmt(compile_stmt):
     def do(program):
         frame = compile_stmt(program)
+        return frame.run()
+    return do
+
+@pytest.fixture(scope='function')
+def interp_expr(compile_expr):
+    def do(program):
+        frame = compile_expr(program)
         return frame.run()
     return do
 

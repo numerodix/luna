@@ -25,6 +25,8 @@ class Frame(object):
             elif type(op) == ops.Call:
                 x = self.stack.pop(0)
                 y = self.stack.pop(0)
+                if type(y) == obj.LVar:
+                    y = self.env[y]
                 func = getattr(builtin, 'lua_' + x.value)
                 func(y)
 

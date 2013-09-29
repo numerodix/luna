@@ -56,7 +56,7 @@ class Compiler(GenericVisitor):
         self.emit(ops.Call())
 
     def visit_identifier(self, node, vc):
-        return obj.LString(node.value)
+        return obj.LVar(node.value)
 
     def visit_number(self, node, vc):
         return obj.LNumber(float(node.value))
