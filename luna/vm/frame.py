@@ -20,23 +20,23 @@ class Frame(object):
                 x = self.stack.pop(0)
                 y = self.stack.pop(0)
                 v = obj.LNumber(x.value + y.value)
-                self.stack.append(v)
+                self.stack.insert(0, v)
 
             elif type(op) == ops.Call:
                 x = self.stack.pop(0)
                 y = self.stack.pop(0)
-                if type(y) == obj.LVar:
-                    y = self.env[y]
-                func = getattr(builtin, 'lua_' + x.value)
-                func(y)
+                if type(x) == obj.LVar:
+                    x = self.env[x]
+                func = getattr(builtin, 'lua_' + y.value)
+                func(x)
 
             elif type(op) == ops.LoadConst:
-                self.stack.append(self.consts[op.index])
+                self.stack.insert(0, self.consts[op.index])
 
             elif type(op) == ops.StoreName:
                 x = self.stack.pop(0)
                 y = self.stack.pop(0)
-                self.env[x] = y
+                self.env[y] = x
 
             self.pc += 1
 
