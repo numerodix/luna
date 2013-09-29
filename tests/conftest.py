@@ -50,6 +50,22 @@ def compile_stmt(parse_stmt):
 
 # Interpretation
 
+@pytest.fixture(scope='function')
+def interp_expr(compile_expr):
+    def do(program):
+        frame = compile_expr(program)
+        return frame.run()
+    return do
+
+@pytest.fixture(scope='function')
+def interp_stmt(compile_stmt):
+    def do(program):
+        frame = compile_stmt(program)
+        return frame.run()
+    return do
+
+
+# old
 @pytest.fixture(scope='module')
 def run_program(load_program, parse_program):
     def do(filepath):

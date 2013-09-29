@@ -46,6 +46,9 @@ class LBoolean(LuaValue):
     def __init__(self, value):
         self.value = value
 
+    def __hash__(self):
+        return hash(self.value)
+
 
 class LNil(LuaValue):
     pass
@@ -57,9 +60,15 @@ class LNumber(LuaValue):
     def __init__(self, value):
         self.value = value
 
+    def __hash__(self):
+        return hash(self.value)
+
 
 class LString(LuaValue):
     _slots = ('value',)
 
     def __init__(self, value):
         self.value = value
+
+    def __hash__(self):
+        return hash(self.value)

@@ -1,6 +1,12 @@
+from luna import objects as obj
 
 
-def test_binop1(compile_expr):
-    frame = compile_expr('1 + 2')
-    top = frame.run()
-    assert 3 == top.value
+def test_ass1(interp_stmt):
+    frame = interp_stmt('a = 1')
+    assert frame.env == {
+        obj.LString('a'): obj.LNumber(1.0),
+    }
+
+def test_binop1(interp_expr):
+    frame = interp_expr('1 + 2')
+    assert 3 == frame.stack[0].value

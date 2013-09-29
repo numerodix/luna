@@ -1,6 +1,6 @@
 from luna import objects as obj
 from luna.ast.visitors import GenericVisitor
-from luna.vm import opcodes as op
+from luna.vm import opcodes as ops
 from luna.vm.frame import Frame
 
 
@@ -14,13 +14,37 @@ class Compiler(GenericVisitor):
         return Frame(self.code, self.consts)
 
     def generic_visit(self, node, vc):
-        pass
+        return vc
 
+
+    def add_const(self, luavalue):
+        self.consts.append(luavalue)
+        return len(self.consts) - 1
+
+    def emit(self, opcode):
+        self.code.append(opcode)
+
+
+    def visit_assignment(self, node, vc):
+        ## TODO: right could be an expr, not a number
+        left, [right] = vc
+        i = self.add_const(left)
+        j = self.add_const(right)
+        self.emit(ops.LoadConst(i))
+        self.emit(ops.LoadConst(j))
+        self.emit(ops.StoreName())
 
     def visit_binop(self, node, vc):
-        self.code += [op.BinaryAdd()]
+        left, o, right = vc
+        i = self.add_const(left)
+        j = self.add_const(right)
+        self.emit(ops.LoadConst(i))
+        self.emit(ops.LoadConst(j))
+        self.emit(ops.BinaryAdd())
+
+
+    def visit_identifier(self, node, vc):
+        return obj.LString(node.value)
 
     def visit_number(self, node, vc):
-        i = len(self.consts)
-        self.code += [op.LoadConst(i)]
-        self.consts += [obj.LNumber(float(node.value))]
+        return obj.LNumber(float(node.value))
