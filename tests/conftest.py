@@ -39,14 +39,22 @@ def compile_expr(parse_expr):
         return compiler.compile(tree)
     return do
 
+@pytest.fixture(scope='function')
+def compile_stmt(parse_stmt):
+    def do(program):
+        tree = parse_stmt(program)
+        compiler = Compiler()
+        return compiler.compile(tree)
+    return do
+
 
 # Interpretation
 
 @pytest.fixture(scope='module')
-def run_program(load_program, parse):
+def run_program(load_program, parse_program):
     def do(filepath):
         content = load_program(filepath)
-        node = parse(content)
+        node = parse_program(content)
         return interpret(node)
     return do
 
@@ -68,7 +76,7 @@ def eval_expr(parse_expr):
 # Parsing
 
 @pytest.fixture(scope='module')
-def parse():
+def parse_program():
     parser = Parser()
     return parser.parse
 
