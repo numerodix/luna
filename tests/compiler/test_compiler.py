@@ -28,3 +28,17 @@ def test_binop1(compile_expr):
         obj.LNumber(1.0),
         obj.LNumber(2.0),
     ]
+
+
+def test_call1(compile_stmt):
+    frame = compile_stmt('print(1)')
+
+    assert frame.code == [
+        ops.LoadConst(0),
+        ops.LoadConst(1),
+        ops.Call(),
+    ]
+    assert frame.consts == [
+        obj.LString('print'),
+        obj.LNumber(1.0),
+    ]

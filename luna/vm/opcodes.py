@@ -43,13 +43,14 @@ class OpCode(object):
 class BinaryAdd(OpCode):
     pass
 
+class Call(OpCode):
+    pass
 
 class LoadConst(OpCode):
     _slots = ('index',)
 
     def __init__(self, index):
         self.index = index
-
 
 class StoreName(OpCode):
     pass

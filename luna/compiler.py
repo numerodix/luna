@@ -18,8 +18,11 @@ class Compiler(GenericVisitor):
 
 
     def add_const(self, luavalue):
-        self.consts.append(luavalue)
-        return len(self.consts) - 1
+        try:
+            return self.consts.index(luavalue)
+        except ValueError:
+            self.consts.append(luavalue)
+            return len(self.consts) - 1
 
     def emit(self, opcode):
         self.code.append(opcode)
@@ -42,6 +45,15 @@ class Compiler(GenericVisitor):
         self.emit(ops.LoadConst(j))
         self.emit(ops.BinaryAdd())
 
+    def visit_call(self, node, vc):
+        func, [[args]] = vc
+        i = self.add_const(func)
+        self.emit(ops.LoadConst(i))
+        # how to handle multiple args?
+        for arg in args:
+            j = self.add_const(arg)
+            self.emit(ops.LoadConst(j))
+        self.emit(ops.Call())
 
     def visit_identifier(self, node, vc):
         return obj.LString(node.value)

@@ -1,4 +1,5 @@
 from luna import objects as obj
+from luna.stdlib import builtin
 from luna.vm import opcodes as ops
 
 
@@ -20,6 +21,12 @@ class Frame(object):
                 y = self.stack.pop(0)
                 v = obj.LNumber(x.value + y.value)
                 self.stack.append(v)
+
+            elif type(op) == ops.Call:
+                x = self.stack.pop(0)
+                y = self.stack.pop(0)
+                func = getattr(builtin, 'lua_' + x.value)
+                func(y)
 
             elif type(op) == ops.LoadConst:
                 self.stack.append(self.consts[op.index])
