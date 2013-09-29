@@ -43,13 +43,13 @@ class Compiler(GenericVisitor):
         self.emit(ops.StoreName())
 
     def visit_binop(self, node, vc):
-        left, op, right = vc
+        left, _, right = vc
+        op = node.op
         i = self.add_const(left)
         j = self.add_const(right)
         self.emit(ops.LoadConst(i))
         self.emit(ops.LoadConst(j))
-
-        opclass = self.binops[op[0]]
+        opclass = self.binops[op.pyvalue]
         self.emit(opclass())
 
     def visit_call(self, node, vc):
