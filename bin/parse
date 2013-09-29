@@ -7,13 +7,14 @@ import os
 import sys
 sys.path.append(dirname(dirname(abspath(__file__))))
 
-from luna import interpret
+from luna import util
+from luna import parse
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('input')
-    parser.add_argument('-d', dest='dump', action="store_true")
     args = parser.parse_args()
 
-    interpret(args.input)
+    tree = parse(args.input)
+    util.write(tree.pp())

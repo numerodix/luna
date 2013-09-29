@@ -55,18 +55,3 @@ class OperatorTable(object):
 
     def level(self, op, arity):
         return self._idx[(op, arity)]
-
-
-if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('input')
-    parser.add_argument('-d', dest='dump', action="store_true")
-    args = parser.parse_args()
-
-    content = util.read(args.input)
-    parser = Parser()
-    tree = parser.parse(content)
-
-    util.write(tree.pp())
