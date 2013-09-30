@@ -4,10 +4,10 @@ from luna.ast import *
 def test_expr_unary1(parse_expr):
     assert Expr(
         UnaryOp(
-            Operator('not'),
-            Boolean('true'),
+            Operator('-'),
+            Number('1'),
         ),
-    ) == parse_expr('not true')
+    ) == parse_expr('-1')
 
 def test_expr_unary2(parse_expr):
     assert Expr(
@@ -53,14 +53,14 @@ def test_expr_paren1(parse_expr):
                 ),
             ),
             Operator('=='),
-            Boolean('true'),
+            Boolean('false'),
         ),
-    ) == parse_expr('( true == true ) == true')
+    ) == parse_expr('( true == true ) == false')
 
 def test_expr_paren2(parse_expr):
     assert Expr(
         BinOp(
-            Boolean('true'),
+            Boolean('false'),
             Operator('=='),
             Expr(
                 BinOp(
@@ -70,23 +70,23 @@ def test_expr_paren2(parse_expr):
                 ),
             ),
         ),
-    ) == parse_expr('true == ( true == true )')
+    ) == parse_expr('false == ( true == true )')
 
 
 def test_expr_ternary(parse_expr):
     assert Expr(
         BinOp(
-            Boolean('true'),
-            Operator('=='),
+            Number('2'),
+            Operator('-'),
             Expr(
                 BinOp(
-                    Boolean('true'),
-                    Operator('=='),
-                    Boolean('true'),
+                    Number('1'),
+                    Operator('-'),
+                    Number('3'),
                 ),
             ),
         ),
-    ) == parse_expr('true == true == true')
+    ) == parse_expr('2 - 1 - 3')
 
 def test_expr_quaternary(parse_expr):
     assert Expr(
