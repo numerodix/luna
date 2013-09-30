@@ -4,6 +4,7 @@ from parsimonious.grammar import Grammar
 
 from luna.parser.operators import OperatorTable
 from luna.parser.rewriter import Rewriter
+from luna.parser.rewriter import BinopRewriter
 from luna import util
 
 
@@ -14,8 +15,9 @@ class Parser(object):
         content = util.read(fp)
 
         self.grammar = Grammar(content)
-        optable = OperatorTable()
-        self.rewriter = Rewriter(optable)
+        self.optable = OperatorTable()
+        self.rewriter = Rewriter(self.optable)
+        self.binop = BinopRewriter(self.optable)
 
     def parse_with_rule(self, rule, content):
         grammar = self.grammar
@@ -24,6 +26,14 @@ class Parser(object):
 
         tree = grammar.parse(content)
         tree = self.rewriter.visit(tree)
+
+        # apply operator precedence
+        rewrites = 1
+        while rewrites > 0:
+            tree = self.binop.visit(tree)
+            rewrites = self.binop.rewrites
+            self.binop = BinopRewriter(self.optable)
+
         return tree
 
     def parse(self, content):

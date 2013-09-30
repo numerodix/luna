@@ -3,6 +3,7 @@ import re
 from parsimonious.nodes import NodeVisitor
 
 from luna import ast
+from luna.ast.visitors import GenericVisitor
 from luna.parser import OperatorTable
 
 
@@ -14,7 +15,7 @@ class Rewriter(NodeVisitor):
     def generic_visit(self, node, vc):
         return vc
 
-
+    
     def visit_program(self, node, vc):
         block, newline = vc
         return ast.Program(block)
@@ -156,21 +157,6 @@ class Rewriter(NodeVisitor):
         if type(expr.value) not in [ast.BinOp, ast.UnaryOp]:
             expr = expr.value
 
-        # apply operator precedence
-        elif type(expr.value) == ast.BinOp:
-            op2 = expr.value.op
-
-            if (op.value == op2.value
-                and self.optable.assoc(op.value, 2) == OperatorTable.LEFT_ASSOC):
-                inner = ast.BinOp(factor, op, expr.value.left)
-                outer = ast.BinOp(ast.Expr(inner), op2, expr.value.right)
-                return ast.BinOp(expr, op, factor)
-
-            if self.optable.level(op.value, 2) > self.optable.level(op2.value, 2):
-                inner = ast.BinOp(factor, op, expr.value.left)
-                outer = ast.BinOp(ast.Expr(inner), op2, expr.value.right)
-                return outer
-
         return ast.BinOp(factor, op, expr)
 
     def visit_unop(self, node, vc):
@@ -219,3 +205,38 @@ class Rewriter(NodeVisitor):
         s = s.replace('\\"', '"')
         s = s.replace("\\'", "'")
         return ast.String(s)
+
+
+class BinopRewriter(GenericVisitor):
+    def __init__(self, optable):
+        self.rewrites = 0
+        self.optable = optable
+
+    def generic_visit(self, node, vc):
+        return vc
+
+    def visit_expr(self, node, vc):
+        return ast.Expr(vc[0])
+
+    def visit_binop(self, node, vc):
+        factor, op, expr = node
+
+        if type(expr.value) == ast.BinOp:
+            op2 = expr.value.op
+
+            if (op.value == op2.value
+                and self.optable.assoc(op.value, 2) == OperatorTable.LEFT_ASSOC):
+                self.rewrites += 1
+
+                inner = ast.BinOp(factor, op, expr.value.left)
+                outer = ast.BinOp(ast.Expr(inner), op2, expr.value.right)
+                return outer
+
+            if self.optable.level(op.value, 2) > self.optable.level(op2.value, 2):
+                self.rewrites += 1
+
+                inner = ast.BinOp(factor, op, expr.value.left)
+                outer = ast.BinOp(ast.Expr(inner), op2, expr.value.right)
+                return outer
+
+        return node
