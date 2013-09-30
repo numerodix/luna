@@ -3,6 +3,7 @@ import re
 from parsimonious.nodes import NodeVisitor
 
 from luna import ast
+from luna.parser import OperatorTable
 
 
 class Rewriter(NodeVisitor):
@@ -158,6 +159,12 @@ class Rewriter(NodeVisitor):
         # apply operator precedence
         elif type(expr.value) == ast.BinOp:
             op2 = expr.value.op
+
+            if (op.value == op2.value
+                and self.optable.assoc(op.value, 2) == OperatorTable.LEFT_ASSOC):
+                inner = ast.BinOp(factor, op, expr.value.left)
+                outer = ast.BinOp(ast.Expr(inner), op2, expr.value.right)
+                return ast.BinOp(expr, op, factor)
 
             if self.optable.level(op.value, 2) > self.optable.level(op2.value, 2):
                 inner = ast.BinOp(factor, op, expr.value.left)

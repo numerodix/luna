@@ -1,8 +1,8 @@
-import re
 import os
 
 from parsimonious.grammar import Grammar
 
+from luna.parser.operators import OperatorTable
 from luna.parser.rewriter import Rewriter
 from luna import util
 
@@ -28,30 +28,3 @@ class Parser(object):
 
     def parse(self, content):
         return self.parse_with_rule(None, content)
-
-
-class OperatorTable(object):
-    def __init__(self):
-        dir = os.path.dirname(os.path.abspath(__file__))
-        fp = os.path.join(dir, 'operators.txt')
-        content = util.read(fp)
-
-        content = re.sub('#.*', '', content)
-        lines = content.split('\n')
-        lines = [line for line in lines if line]
-
-        idx = {}
-        for i, line in enumerate(lines):
-            for op in re.split('[ ]+', line):
-                op = op.strip()
-                arity, op = op.split(':')
-
-                arity = int(arity)
-                level = len(lines) - i
-
-                idx[(op, arity)] = level
-
-        self._idx = idx
-
-    def level(self, op, arity):
-        return self._idx[(op, arity)]

@@ -73,30 +73,57 @@ def test_expr_paren2(parse_expr):
     ) == parse_expr('false == ( true == true )')
 
 
-def test_expr_ternary(parse_expr):
+def test_expr_ternary1(parse_expr):
+    assert Expr(
+        BinOp(
+            Expr(
+                BinOp(
+                    Number('2'),
+                    Operator('-'),
+                    Number('1'),
+                ),
+            ),
+            Operator('-'),
+            Number('3'),
+        ),
+    ) == parse_expr('2 - 1 - 3')
+
+def test_expr_ternary2(parse_expr):
     assert Expr(
         BinOp(
             Number('2'),
-            Operator('-'),
+            Operator('^'),
             Expr(
                 BinOp(
                     Number('1'),
-                    Operator('-'),
+                    Operator('^'),
                     Number('3'),
                 ),
             ),
         ),
-    ) == parse_expr('2 - 1 - 3')
+    ) == parse_expr('2 ^ 1 ^ 3')
+
+def test_expr_ternary3(parse_expr):
+    assert Expr(
+        BinOp(
+            Expr(
+                BinOp(
+                    Number('4'),
+                    Operator('=='),
+                    Number('5'),
+                ),
+            ),
+            Operator('=='),
+            Number('9'),
+        ),
+    ) == parse_expr('4 == 5 == 9')
+
 
 def test_expr_quaternary(parse_expr):
     assert Expr(
         BinOp(
-            Boolean('true'),
-            Operator('=='),
             Expr(
                 BinOp(
-                    Boolean('true'),
-                    Operator('=='),
                     Expr(
                         BinOp(
                             Boolean('true'),
@@ -104,8 +131,12 @@ def test_expr_quaternary(parse_expr):
                             Boolean('true'),
                         ),
                     ),
+                    Operator('=='),
+                    Boolean('true'),
                 ),
             ),
+            Operator('=='),
+            Boolean('true'),
         ),
     ) == parse_expr('true == true == true == true')
 

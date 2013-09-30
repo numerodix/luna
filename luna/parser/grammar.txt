@@ -38,10 +38,14 @@ binop               = factor ws op2 ws expr
 unop                = op1 ws expr
 
 operand             = boolean / nil / number / string / identifier
-op2                 = "==" / "~=" / "<" / ">" / "<=" / "=>"
-                        / "+" / "-" / "*" / "/"
-                        / "and" / "or"
-op1                 = "-" / "not"
+op1                 = "not" / "#" / "-"
+op2                 = "^"
+                        / "*"  / "/" / "%"
+                        / "+" / "-"
+                        / ".."
+                        / "<" / ">" / "<=" / ">=" / "~=" / "=="
+                        / "and"
+                        / "or"
 keyword             = "break" / "goto" / "local"
 
 string              = ( "'" ( "\\'" / ~"[^']" )* "'" )

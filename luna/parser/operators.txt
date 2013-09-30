@@ -1,11 +1,14 @@
-# operator precedence table. space separated, one level per line descending
-# <-highest->
-#  <arity>:<operator> <arity>:<operator>
-#  <arity>:<operator>
-# <-lowest->
+; operator precedence table. space separated, one level per line descending
+; <-highest->
+;  <arity>:<assoc>:<operator> <arity>:<assoc>:<operator>
+;  <arity>:<assoc>:<operator>
+; <-lowest->
 
-1:- 1:not
-2:* 2:/
-2:+ 2:-
-2:==
-2:=
+2:r:^
+1:r:not 1:r:# 1:r:-
+2:l:* 2:l:/ 2:l:%
+2:l:+ 2:l:-
+2:r:..
+2:l:< 2:l:> 2:l:<= 2:l:>= 2:l:~= 2:l:==
+2:l:and
+2:l:or
