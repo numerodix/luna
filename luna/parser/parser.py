@@ -3,7 +3,7 @@ import os
 from parsimonious.grammar import Grammar
 
 from luna.parser.operators import OperatorTable
-from luna.parser.rewriter import AssocRewriter
+from luna.parser.assoc import AssocRewriter
 from luna.parser.astbuilder import AstBuilder
 from luna import util
 

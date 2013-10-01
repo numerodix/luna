@@ -143,6 +143,7 @@ class AstBuilder(NodeVisitor):
         # ( expr )
         else:
             paren, ws, expr, ws, paren = vc[0]
+            expr.parenthesized = True
             args = expr
 
         return args

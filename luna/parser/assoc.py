@@ -1,6 +1,6 @@
 from luna import ast
 from luna.ast.visitors import GenericVisitor
-from luna.parser import OperatorTable
+from luna.parser.operators import OperatorTable
 
 
 class AssocRewriter(GenericVisitor):
@@ -20,7 +20,7 @@ class AssocRewriter(GenericVisitor):
         return node
 
     def generic_visit(self, node, vc):
-        return vc
+        return node
 
     def visit_expr(self, node, vc):
         return ast.Expr(vc[0])
@@ -34,7 +34,8 @@ class AssocRewriter(GenericVisitor):
     def visit_binop(self, node, vc):
         factor, op, expr = node
 
-        if type(expr.value) == ast.BinOp:
+        # don't rewrite if expr was in parens
+        if type(expr.value) == ast.BinOp and not expr.parenthesized:
             op2 = expr.value.op
 
             if (op.value == op2.value
