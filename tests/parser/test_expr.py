@@ -119,7 +119,7 @@ def test_expr_ternary3(parse_expr):
     ) == parse_expr('4 == 5 == 9')
 
 
-def test_expr_quaternary(parse_expr):
+def test_expr_quaternary1(parse_expr):
     assert Expr(
         BinOp(
             Expr(
@@ -139,6 +139,27 @@ def test_expr_quaternary(parse_expr):
             Boolean('true'),
         ),
     ) == parse_expr('true == true == true == true')
+
+def test_expr_quaternary2(parse_expr):
+    assert Expr(
+        BinOp(
+            Expr(
+                BinOp(
+                    Boolean('true'),
+                    Operator('=='),
+                    Expr(
+                        BinOp(
+                            Boolean('true'),
+                            Operator('=='),
+                            Boolean('true'),
+                        ),
+                    ),
+                ),
+            ),
+            Operator('=='),
+            Boolean('true'),
+        ),
+    ) == parse_expr('true == (true == true) == true')
 
 
 def test_expr_nums1(parse_expr):
@@ -186,6 +207,27 @@ def test_expr_nums3(parse_expr):
     ) == parse_expr('-1 + 1')
 
 def test_expr_nums4(parse_expr):
+    assert Expr(
+        BinOp(
+            Expr(
+                BinOp(
+                    Number('7'),
+                    Operator('+'),
+                    Expr(
+                        BinOp(
+                            Number('5'),
+                            Operator('*'),
+                            Number('2'),
+                        ),
+                    ),
+                ),
+            ),
+            Operator('+'),
+            Number('3'),
+        ),
+    ) == parse_expr('7 + 5 * 2 + 3')
+
+def test_expr_nums5(parse_expr):
     assert Expr(
         BinOp(
             Identifier('a'),
