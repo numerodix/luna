@@ -1,6 +1,9 @@
 from luna.ast import *
 
 
+def test_z1(parse_expr):
+    parse_expr('a == a')
+
 def test_expr_unary1(parse_expr):
     assert Expr(
         UnaryOp(

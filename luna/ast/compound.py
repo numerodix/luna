@@ -86,6 +86,15 @@ class If(ASTNode):
         self.elseblock = elseblock
 
 
+class Power(ASTNode):
+    _slots = ('left', 'op', 'right')
+
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+
+
 class Program(ASTNode):
     _slots = ('values',)
 
