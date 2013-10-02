@@ -1,22 +1,23 @@
+# expressions
 expr                = or_expr / operand
-or_expr             = and_expr   ( "or" and_expr )*
-and_expr            = bool_expr  ( "and" bool_expr )*
-bool_expr           = str_expr  ( ( "<" / ">" / "<=" / ">=" / "~=" / "==" ) str_expr )*
-str_expr            = ( arith_expr ".." str_expr )      / arith_expr
-arith_expr          = term      ( ( "+" / "-" ) term )*
-term                = unary     ( ( "*" / "/" / "%" ) unary )*
-unary               = ( ( "not" / "#" / "-" ) power )   / power
-power               = ( factor "^" power )              / factor
-factor              = operand                           /  ( "(" expr ")" )
+or_expr             = and_expr  ( ws "or" ws and_expr )*
+and_expr            = cmp_expr  ( ws "and" ws cmp_expr )*
+cmp_expr            = str_expr  ( ws cmp_op ws str_expr )*
+str_expr            = ( arith_expr ws ".." ws str_expr )      / arith_expr
+arith_expr          = term_expr     ( ws arith_op ws term_expr )*
+term_expr           = unary_expr    ( ws term_op ws  unary_expr )*
+unary_expr          = ( unary_op ws power_expr )  / power_expr
+power_expr          = ( factor ws "^" ws power_expr )  / factor
+factor              = operand /  ( "(" ws expr ws ")" )
 
-
-#expr                = term ( "+" term )?
-#term                = power ( "*" power)?
-#power               = ( power "^" power ) / factor
-#factor              = identifier / number / ( "(" expr ")" )
-
-
+# operators
+cmp_op              = "<" / ">" / "<=" / ">=" / "~=" / "=="
+arith_op            = "+" / "-"
+term_op             = "*" / "/" / "%"
+unary_op            = "not" / "#" / "-"
 operand             = boolean / nil / number / string / identifier
+
+# atoms
 string              = ( "'" ( "\\'" / ~"[^']" )* "'" )
                         / ( '"' ( '\\"' / ~'[^"]' )* '"' )
 #number              = ~"[0-9]+[.][0-9]*" / ~"[0-9]*[.][0-9]+" / ~"[0-9]+"
