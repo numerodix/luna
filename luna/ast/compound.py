@@ -8,6 +8,15 @@ class Args(ASTNode):
         self.values = values
 
 
+class Arith(ASTNode):
+    _slots = ('left', 'op', 'right')
+
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+
+
 class Assignment(ASTNode):
     _slots = ('identifier', 'expr')
 
@@ -38,6 +47,15 @@ class Call(ASTNode):
     def __init__(self, identifier, expr):
         self.identifier = identifier
         self.expr = expr
+
+
+class Concat(ASTNode):
+    _slots = ('left', 'op', 'right')
+
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
 
 
 class Expr(ASTNode):
@@ -87,11 +105,10 @@ class If(ASTNode):
 
 
 class Power(ASTNode):
-    _slots = ('left', 'op', 'right')
+    _slots = ('left', 'right')
 
-    def __init__(self, left, op, right):
+    def __init__(self, left, right):
         self.left = left
-        self.op = op
         self.right = right
 
 
@@ -122,6 +139,15 @@ class Stmt(ASTNode):
 
     def __init__(self, value):
         self.value = value
+
+
+class Term(ASTNode):
+    _slots = ('left', 'op', 'right')
+
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
 
 
 class UnaryOp(ASTNode):

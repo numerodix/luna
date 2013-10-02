@@ -47,26 +47,44 @@ class AstBuilder(NodeVisitor):
     def visit_arith_expr(self, node, vc):
         term_expr, rest = vc
         if rest:
-            pass  # TODO
+            rest = [(op, term_e) for (ws, op, ws, term_e) in rest]
+            left = term_expr
+            for op, term_e in rest:
+                left = ast.Expr(ast.Arith(left, op, term_e))
+            return left.value
+
         return term_expr
 
     def visit_term_expr(self, node, vc):
         unary_expr, rest = vc
         if rest:
-            pass   # TODO
+            rest = [(op, unary_e) for (ws, op, ws, unary_e) in rest]
+            left = unary_expr
+            for op, unary_e in rest:
+                left = ast.Expr(ast.Term(left, op, unary_e))
+            return left.value
+
         return unary_expr
 
     def visit_unary_expr(self, node, vc):
         if len(vc) == 1:
+            if type(vc[0]) == list:
+                op, ws, power_expr = vc[0]
+                return ast.UnaryOp(op, power_expr)
             return vc[0]
 
+        raise Exception
         op, ws, power_expr = vc
         return ast.UnaryOp(op, power_expr)
 
     def visit_power_expr(self, node, vc):
         if len(vc) == 1:
+            if type(vc[0]) == list:
+                factor, ws, caret, ws, power_expr = vc[0]
+                return ast.Power(factor, power_expr)
             return vc[0]
 
+        raise Exception
         factor, ws, caret, ws, power_expr = vc
         return ast.Power(factor, caret, power_expr)
 
@@ -81,16 +99,16 @@ class AstBuilder(NodeVisitor):
     # Operators
 
     def visit_cmp_op(self, node, vc):
-        return node.text
+        return ast.Operator(node.text)
 
     def visit_arith_op(self, node, vc):
-        return node.text
+        return ast.Operator(node.text)
 
     def visit_term_op(self, node, vc):
-        return node.text
+        return ast.Operator(node.text)
 
     def visit_unary_op(self, node, vc):
-        return node.text
+        return ast.Operator(node.text)
 
     def visit_operand(self, node, vc):
         return vc[0]
