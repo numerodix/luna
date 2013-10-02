@@ -13,6 +13,9 @@ def interpret(filepath):
     frame.run()
 
 def parse(filepath):
-    content = util.read(filepath)
+    import os
+    content = filepath
+    if os.path.isfile(filepath):
+        content = util.read(filepath)
     parser = Parser()
-    return parser.parse(content)
+    return parser.parse_with_rule(None, content)

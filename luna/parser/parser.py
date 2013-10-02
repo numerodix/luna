@@ -24,6 +24,8 @@ class Parser(object):
             grammar = grammar[rule]
 
         tree = grammar.parse(content)
+        print tree
+        return 
         tree = self.builder.visit(tree)
         tree = AssocRewriter.fix(self.optable, tree)
 

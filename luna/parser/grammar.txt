@@ -1,53 +1,16 @@
-program             = block newline?
-
-block               = stmt ( ~"(\s*;|\s)" ws stmt )*
-stmt                = funccall / assignment / funcdef
-                        / if / while / repeat / foreach / for / return
-
-
-if                  = "if" ws expr ws "then" ws block ws
-                        ( "elseif" ws expr ws "then" ws block ws )*
-                        ( "else" ws block ws )? "end"
-
-for                 = "for" ws identifier ws "=" ws
-                        expr ws "," ws expr ws ( "," ws expr ws )?
-                        "do" ws block ws "end"
-foreach             = "for" ws identifier ( ws "," ws identifier )* ws
-                        "in" ws expr ( ws "," ws expr)* ws
-                        "do" ws block ws "end"
-
-repeat              = "repeat" ws block ws "until" ws expr
-return              = "return" ws expr
-while               = "while" ws expr ws "do" ws block ws "end"
+expr                = term      ( ( "+" / "-" ) term )*
+term                = power     ( ( "*" / "/" ) power )*
+power               = ( factor "^" power ) / factor
+factor              = number /  ( "(" expr ")" )
 
 
-funcdef             = "function" ws identifier ws
-                        "(" ws funcparams? ws ")" ws
-                        block ws "end"
-funcparams          = expr ( ws "," ws expr )*
-funccall            = identifier ws "(" ws funcargs? ws ")"
-funcargs            = expr ( ws "," ws expr )*
+#expr                = term ( "+" term )?
+#term                = power ( "*" power)?
+#power               = ( power "^" power ) / factor
+#factor              = identifier / number / ( "(" expr ")" )
 
-assignment          = identifier ws "=" ws expr
-
-expr                = binop / unop / funccall / factor
-factor              = ( "(" ws expr ws ")" )
-                        / operand
-
-binop               = factor ws op2 ws expr
-unop                = op1 ws expr
 
 operand             = boolean / nil / number / string / identifier
-op1                 = "not" / "#" / "-"
-op2                 = "^"
-                        / "*"  / "/" / "%"
-                        / "+" / "-"
-                        / ".."
-                        / "<" / ">" / "<=" / ">=" / "~=" / "=="
-                        / "and"
-                        / "or"
-keyword             = "break" / "goto" / "local"
-
 string              = ( "'" ( "\\'" / ~"[^']" )* "'" )
                         / ( '"' ( '\\"' / ~'[^"]' )* '"' )
 number              = ~"[0-9]+[.][0-9]*" / ~"[0-9]*[.][0-9]+" / ~"[0-9]+"
@@ -55,5 +18,4 @@ identifier          = ~"[_a-zA-Z][_a-zA-Z0-9]*"
 boolean             = "true" / "false"
 nil                 = "nil"
 
-newline             = "\n"
 ws                  = ~"\s*"
