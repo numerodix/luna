@@ -23,6 +23,9 @@ class LuaValue(object):
 
         return True
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     # Iterator
 
     def __iter__(self):
