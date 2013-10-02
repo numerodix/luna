@@ -54,17 +54,13 @@ def test_arith1(parse_expr):
     ) == parse_expr('2 + 4 - 8')
 
 
-def test_str1(parse_expr):
+def test_concat1(parse_expr):
     assert Expr(
-        Arith(
-            Expr(
-                Arith(
-                    Number('2'),
-                    Operator('+'),
-                    Number('4'),
-                ),
+        Concat(
+            Number('2'),
+            Concat(
+                Number('8'),
+                Number('19'),
             ),
-            Operator('-'),
-            Number('8'),
         ),
-    ) == parse_expr('2 + 4 - 8')
+    ) == parse_expr('2..8..19')

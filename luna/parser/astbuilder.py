@@ -37,12 +37,16 @@ class AstBuilder(NodeVisitor):
             pass  # TODO
         return str_expr
 
-    def visit_str_expr(self, node, vc):
+    def visit_concat_expr(self, node, vc):
         if len(vc) == 1:
+            if type(vc[0]) == list:
+                arith_expr, ws, op, ws, str_expr = vc[0]
+                return ast.Concat(arith_expr, str_expr)
             return vc[0]
 
+        raise Exception
         arith_expr, ws, op, ws, str_expr = vc
-        return ast.StrOp(arith_expr, op, str_expr)
+        return ast.Concat(arith_expr, op, str_expr)
 
     def visit_arith_expr(self, node, vc):
         term_expr, rest = vc

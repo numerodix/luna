@@ -50,11 +50,10 @@ class Call(ASTNode):
 
 
 class Concat(ASTNode):
-    _slots = ('left', 'op', 'right')
+    _slots = ('left', 'right')
 
-    def __init__(self, left, op, right):
+    def __init__(self, left, right):
         self.left = left
-        self.op = op
         self.right = right
 
 
