@@ -28,7 +28,7 @@ class AstBuilder(NodeVisitor):
                 left = ast.Expr(ast.Or(left, and_e))
             return left.value
 
-        return and_expr
+        return ast.Expr(and_expr)
 
     def visit_and_expr(self, node, vc):
         cmp_expr, rest = vc
@@ -39,7 +39,7 @@ class AstBuilder(NodeVisitor):
                 left = ast.Expr(ast.And(left, cmp_e))
             return left.value
 
-        return cmp_expr
+        return ast.Expr(cmp_expr)
 
     def visit_cmp_expr(self, node, vc):
         concat_expr, rest = vc
@@ -50,18 +50,18 @@ class AstBuilder(NodeVisitor):
                 left = ast.Expr(ast.Cmp(left, op, concat_e))
             return left.value
 
-        return concat_expr
+        return ast.Expr(concat_expr)
 
     def visit_concat_expr(self, node, vc):
-        if len(vc) == 1:
-            if type(vc[0]) == list:
-                arith_expr, ws, op, ws, str_expr = vc[0]
-                return ast.Concat(arith_expr, str_expr)
-            return vc[0]
+        [vc] = vc
+        if type(vc) == list:
+            arith_expr, ws, op, ws, concat_expr = vc
+            if type(concat_expr) == ast.Concat:
+                concat_expr = ast.Expr(concat_expr)
 
-        raise Exception
-        arith_expr, ws, op, ws, str_expr = vc
-        return ast.Concat(arith_expr, op, str_expr)
+            return ast.Concat(arith_expr, concat_expr)
+
+        return ast.Expr(vc)
 
     def visit_arith_expr(self, node, vc):
         term_expr, rest = vc
@@ -69,10 +69,13 @@ class AstBuilder(NodeVisitor):
             rest = [(op, term_e) for (ws, op, ws, term_e) in rest]
             left = term_expr
             for op, term_e in rest:
+                if type(left) == ast.Term:
+                    left = ast.Expr(left)
+
                 left = ast.Expr(ast.Arith(left, op, term_e))
             return left.value
 
-        return term_expr
+        return ast.Expr(term_expr)
 
     def visit_term_expr(self, node, vc):
         unary_expr, rest = vc
@@ -83,36 +86,30 @@ class AstBuilder(NodeVisitor):
                 left = ast.Expr(ast.Term(left, op, unary_e))
             return left.value
 
-        return unary_expr
+        return ast.Expr(unary_expr)
 
     def visit_unary_expr(self, node, vc):
-        if len(vc) == 1:
-            if type(vc[0]) == list:
-                op, ws, power_expr = vc[0]
-                return ast.UnaryOp(op, power_expr)
-            return vc[0]
+        [vc] = vc
+        if type(vc) == list:
+            op, ws, power_expr = vc
+            return ast.UnaryOp(op, power_expr)
 
-        raise Exception
-        op, ws, power_expr = vc
-        return ast.UnaryOp(op, power_expr)
+        return ast.Expr(vc)
 
     def visit_power_expr(self, node, vc):
-        if len(vc) == 1:
-            if type(vc[0]) == list:
-                factor, ws, caret, ws, power_expr = vc[0]
-                return ast.Power(factor, power_expr)
-            return vc[0]
+        [vc] = vc
+        if type(vc) == list:
+            factor, ws, caret, ws, power_expr = vc
+            return ast.Power(factor, power_expr)
 
-        raise Exception
-        factor, ws, caret, ws, power_expr = vc
-        return ast.Power(factor, caret, power_expr)
+        return ast.Expr(vc)
 
     def visit_factor(self, node, vc):
         if len(vc) == 1:
-            return vc[0]
+            return ast.Factor(vc[0])
 
         paren, ws, expr, ws, paren = vc
-        return expr
+        return ast.Factor(expr)
 
 
     # Operators
@@ -130,7 +127,7 @@ class AstBuilder(NodeVisitor):
         return ast.Operator(node.text)
 
     def visit_operand(self, node, vc):
-        return vc[0]
+        return ast.Operand(vc[0])
 
 
     # Atoms
@@ -152,3 +149,19 @@ class AstBuilder(NodeVisitor):
 
     def visit_nil(self, node, vc):
         return ast.Nil()
+
+
+def prune(node):
+    if type(node) == str:
+        return node
+
+    if type(node) in [ast.Expr, ast.Operand]:
+        node = node.value
+
+    values = [prune(c) for c in node]
+    if type(node) in [list, tuple]:
+        node = type(node)(values)
+    else:
+        node = type(node)(*values)
+
+    return node

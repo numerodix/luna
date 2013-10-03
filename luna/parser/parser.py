@@ -5,6 +5,7 @@ from parsimonious.grammar import Grammar
 from luna.parser.operators import OperatorTable
 from luna.parser.assoc import AssocRewriter
 from luna.parser.astbuilder import AstBuilder
+from luna.parser.astbuilder import prune
 from luna import util
 
 
@@ -25,6 +26,7 @@ class Parser(object):
 
         tree = grammar.parse(content)
         tree = self.builder.visit(tree)
+        #tree = prune(prune(tree))
         #tree = AssocRewriter.fix(self.optable, tree)
 
         return tree

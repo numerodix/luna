@@ -1,13 +1,17 @@
 from luna.ast import *
 
 
+## Lowest to highest precedence: tests for associativity
+
 def test_power1(parse_expr):
     assert Expr(
         Power(
             Number('3'),
-            Power(
-                Number('4'),
-                Number('5'),
+            Expr(
+                Power(
+                    Number('4'),
+                    Number('5'),
+                ),
             ),
         ),
     ) == parse_expr('3 ^ 4 ^ 5')
@@ -58,9 +62,11 @@ def test_concat1(parse_expr):
     assert Expr(
         Concat(
             Number('2'),
-            Concat(
-                Number('8'),
-                Number('19'),
+            Expr(
+                Concat(
+                    Number('8'),
+                    Number('19'),
+                ),
             ),
         ),
     ) == parse_expr('2..8..19')
@@ -108,3 +114,26 @@ def test_or1(parse_expr):
             Number('2'),
         ),
     ) == parse_expr('1 or 1 or 2')
+
+
+## Precedence
+
+def test_power_unary1(parse_expr):
+    assert Expr(
+        Arith(
+            Expr(
+                Term(
+                    Number('5'),
+                    Operator('*'),
+                    Expr(
+                        Power(
+                            Number('4'),
+                            Number('2'),
+                        ),
+                    ),
+                ),
+            ),
+            Operator('+'),
+            Number('9'),
+        ),
+    ) == parse_expr('5 * 4 ^ 2 + 9')

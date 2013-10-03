@@ -15,10 +15,10 @@ def test_float1(parse_operand):
     assert Number('1') == parse_operand('1')
 
 def test_float2(parse_operand):
-    assert Number('1.') == parse_operand('1.')
+    assert Number('1.0') == parse_operand('1.0')
 
 def test_float3(parse_operand):
-    assert Number('.1') == parse_operand('.1')
+    assert Number('0.1') == parse_operand('0.1')
 
 
 def test_string1(parse_operand):

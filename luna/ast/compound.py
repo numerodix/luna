@@ -79,7 +79,13 @@ class Expr(ASTNode):
 
     def __init__(self, value):
         self.value = value
-        self.parenthesized = False
+
+
+class Factor(ASTNode):
+    _slots = ('value',)
+
+    def __init__(self, *value):
+        self.value = value
 
 
 class For(ASTNode):
@@ -133,6 +139,13 @@ class Program(ASTNode):
 
     def __init__(self, *values):
         self.values = values
+
+
+class Operand(ASTNode):
+    _slots = ('value',)
+
+    def __init__(self, *value):
+        self.value = value
 
 
 class Or(ASTNode):
