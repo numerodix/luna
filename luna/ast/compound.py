@@ -1,6 +1,14 @@
 from luna.ast.base import ASTNode
 
 
+class And(ASTNode):
+    _slots = ('left', 'right')
+
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+
 class Args(ASTNode):
     _slots = ('values',)
 
@@ -47,6 +55,15 @@ class Call(ASTNode):
     def __init__(self, identifier, expr):
         self.identifier = identifier
         self.expr = expr
+
+
+class Cmp(ASTNode):
+    _slots = ('left', 'op', 'right')
+
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
 
 
 class Concat(ASTNode):
@@ -116,6 +133,14 @@ class Program(ASTNode):
 
     def __init__(self, *values):
         self.values = values
+
+
+class Or(ASTNode):
+    _slots = ('left', 'right')
+
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
 
 
 class Repeat(ASTNode):

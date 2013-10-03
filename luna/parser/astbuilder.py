@@ -22,20 +22,35 @@ class AstBuilder(NodeVisitor):
     def visit_or_expr(self, node, vc):
         and_expr, rest = vc
         if rest:
-            pass  # TODO
+            rest = [and_e for (ws, op, ws, and_e) in rest]
+            left = and_expr
+            for and_e in rest:
+                left = ast.Expr(ast.Or(left, and_e))
+            return left.value
+
         return and_expr
 
     def visit_and_expr(self, node, vc):
         cmp_expr, rest = vc
         if rest:
-            pass  # TODO
+            rest = [cmp_e for (ws, op, ws, cmp_e) in rest]
+            left = cmp_expr
+            for cmp_e in rest:
+                left = ast.Expr(ast.And(left, cmp_e))
+            return left.value
+
         return cmp_expr
 
     def visit_cmp_expr(self, node, vc):
-        str_expr, rest = vc
+        concat_expr, rest = vc
         if rest:
-            pass  # TODO
-        return str_expr
+            rest = [(op, concat_e) for (ws, op, ws, concat_e) in rest]
+            left = concat_expr
+            for op, concat_e in rest:
+                left = ast.Expr(ast.Cmp(left, op, concat_e))
+            return left.value
+
+        return concat_expr
 
     def visit_concat_expr(self, node, vc):
         if len(vc) == 1:

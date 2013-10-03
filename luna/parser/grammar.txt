@@ -11,7 +11,7 @@ power_expr          = ( factor ws "^" ws power_expr )  / factor
 factor              = operand /  ( "(" ws expr ws ")" )
 
 # operators
-cmp_op              = "<" / ">" / "<=" / ">=" / "~=" / "=="
+cmp_op              = "<=" / ">=" / "<" / ">" / "~=" / "=="
 arith_op            = "+" / "-"
 term_op             = "*" / "/" / "%"
 unary_op            = "not" / "#" / "-"

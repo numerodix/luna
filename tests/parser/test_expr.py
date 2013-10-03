@@ -64,3 +64,47 @@ def test_concat1(parse_expr):
             ),
         ),
     ) == parse_expr('2..8..19')
+
+
+def test_cmp1(parse_expr):
+    assert Expr(
+        Cmp(
+            Expr(
+                Cmp(
+                    Number('2'),
+                    Operator('<'),
+                    Number('3'),
+                ),
+            ),
+            Operator('>='),
+            Number('1'),
+        ),
+    ) == parse_expr('2 < 3 >= 1')
+
+
+def test_and1(parse_expr):
+    assert Expr(
+        And(
+            Expr(
+                And(
+                    Number('1'),
+                    Number('1'),
+                ),
+            ),
+            Number('2'),
+        ),
+    ) == parse_expr('1 and 1 and 2')
+
+
+def test_or1(parse_expr):
+    assert Expr(
+        Or(
+            Expr(
+                Or(
+                    Number('1'),
+                    Number('1'),
+                ),
+            ),
+            Number('2'),
+        ),
+    ) == parse_expr('1 or 1 or 2')
