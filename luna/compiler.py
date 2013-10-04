@@ -35,11 +35,11 @@ class Compiler(GenericVisitor):
 
     def visit_assignment(self, node, vc):
         left, [right] = vc
-        i = self.add_const(left)
-        self.emit(ops.LoadConst(i))
         if right:
             j = self.add_const(right)
             self.emit(ops.LoadConst(j))
+        i = self.add_const(left)
+        self.emit(ops.LoadConst(i))
         self.emit(ops.StoreName())
 
     def visit_arith(self, node, vc):

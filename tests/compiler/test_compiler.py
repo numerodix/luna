@@ -11,8 +11,8 @@ def test_ass1(compile_stmt):
         ops.StoreName(),
     ]
     assert frame.consts == [
-        obj.LVar('a'),
         obj.LNumber(1.0),
+        obj.LVar('a'),
     ]
 
 def test_ass2(compile_stmt):
