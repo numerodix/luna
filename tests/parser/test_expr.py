@@ -154,3 +154,24 @@ def test_mixedops3(parse_expr):
             ),
         ),
     ) == parse_expr('not 3 and 3 or 4 > 4')
+
+
+## Funccalls
+
+def test_funcall1(parse_expr):
+    assert Expr(
+        Call(
+            Identifier('print'),
+            Expr(
+                Identifier('x'),
+            ),
+        ),
+    ) == parse_expr('print(x)')
+
+def test_funcall2(parse_expr):
+    assert Expr(
+        Call(
+            Identifier('print'),
+            parse_expr('x and y or z'),
+        ),
+    ) == parse_expr('print(x and y or z)')

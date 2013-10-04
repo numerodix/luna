@@ -1,5 +1,5 @@
 # expressions
-expr                = or_expr / operand
+expr                = funcall / or_expr / operand
 or_expr             = and_expr  ( ws "or" ws and_expr )*
 and_expr            = cmp_expr  ( ws "and" ws cmp_expr )*
 cmp_expr            = concat_expr  ( ws cmp_op ws concat_expr )*
@@ -9,6 +9,10 @@ term_expr           = unary_expr    ( ws term_op ws  unary_expr )*
 unary_expr          = ( unary_op ws power_expr )  / power_expr
 power_expr          = ( factor ws "^" ws power_expr )  / factor
 factor              = operand /  ( "(" ws expr ws ")" )
+
+# funcall
+funcall             = identifier ws "(" ws funargs? ws ")"
+funargs             = expr ( ws "," ws expr )*
 
 # operators
 cmp_op              = "<=" / ">=" / "<" / ">" / "~=" / "=="

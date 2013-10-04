@@ -107,6 +107,18 @@ class AstBuilder(NodeVisitor):
         return vc
 
 
+    # Funccalls
+
+    def visit_funcall(self, node, vc):
+        id, ws, paren, ws, args, ws, paren = vc
+        return ast.Call(id, args[0] or None)
+
+    def visit_funargs(self, node, vc):
+        expr, rest = vc
+        return expr
+
+
+
     # Operators
 
     def visit_cmp_op(self, node, vc):
