@@ -26,8 +26,6 @@ class Parser(object):
 
         tree = grammar.parse(content)
         tree = self.builder.visit(tree)
-        #tree = prune(prune(tree))
-        #tree = AssocRewriter.fix(self.optable, tree)
 
         return tree
 

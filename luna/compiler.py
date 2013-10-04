@@ -34,21 +34,23 @@ class Compiler(GenericVisitor):
 
 
     def visit_assignment(self, node, vc):
-        ## TODO: right could be an expr, not a number
         left, [right] = vc
         i = self.add_const(left)
-        j = self.add_const(right)
         self.emit(ops.LoadConst(i))
-        self.emit(ops.LoadConst(j))
+        if right:
+            j = self.add_const(right)
+            self.emit(ops.LoadConst(j))
         self.emit(ops.StoreName())
 
-    def visit_binop(self, node, vc):
+    def visit_arith(self, node, vc):
         left, _, right = vc
         op = node.op
-        i = self.add_const(left)
-        j = self.add_const(right)
-        self.emit(ops.LoadConst(i))
-        self.emit(ops.LoadConst(j))
+        if left:
+            i = self.add_const(left)
+            self.emit(ops.LoadConst(i))
+        if right:
+            j = self.add_const(right)
+            self.emit(ops.LoadConst(j))
         opclass = self.binops[op.pyvalue]
         self.emit(opclass())
 
