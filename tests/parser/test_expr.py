@@ -162,7 +162,7 @@ def test_funcall1(parse_expr):
     assert Expr(
         Call(
             Identifier('print'),
-            Expr(
+            Args(
                 Identifier('x'),
             ),
         ),
@@ -172,6 +172,9 @@ def test_funcall2(parse_expr):
     assert Expr(
         Call(
             Identifier('print'),
-            parse_expr('x and y or z'),
+            Args(
+                parse_expr('x and y'),
+                parse_expr('z'),
+            ),
         ),
-    ) == parse_expr('print(x and y or z)')
+    ) == parse_expr('print(x and y, z)')

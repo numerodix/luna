@@ -115,8 +115,11 @@ class AstBuilder(NodeVisitor):
 
     def visit_funargs(self, node, vc):
         expr, rest = vc
-        return expr
+        if rest:
+            rest = [e for (ws, comma, ws, e) in rest]
+            expr = [expr] + rest
 
+        return ast.Args(*expr)
 
 
     # Operators
