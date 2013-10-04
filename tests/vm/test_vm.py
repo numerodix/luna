@@ -22,3 +22,11 @@ def test_arith2(interp_expr):
     frame = interp_expr('1 - 2 - 5')
     assert -6 == frame.stack[0].value
 
+
+def test_call1(interp_stmt, stdout):
+    frame = interp_stmt('print(1)')
+    assert '1\n' == stdout()
+
+def test_call2(interp_stmt, stdout):
+    frame = interp_stmt('print(1 - 3)')
+    assert '-2\n' == stdout()

@@ -29,8 +29,8 @@ class Frame(object):
                 self.stack.append(v)
 
             elif type(op) == ops.Call:
-                arg = self.stack.pop()
                 funcname = self.stack.pop()
+                arg = self.stack.pop()
                 if type(arg) == obj.LVar:
                     arg = self.env[arg]
                 func = getattr(builtin, 'lua_' + funcname.value)

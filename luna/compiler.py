@@ -55,13 +55,14 @@ class Compiler(GenericVisitor):
         self.emit(opclass())
 
     def visit_call(self, node, vc):
-        func, [[args]] = vc
+        func, [args] = vc
         # how to handle multiple args?
+        for arg in args:
+            if arg:
+                j = self.add_const(arg)
+                self.emit(ops.LoadConst(j))
         i = self.add_const(func)
         self.emit(ops.LoadConst(i))
-        for arg in args:
-            j = self.add_const(arg)
-            self.emit(ops.LoadConst(j))
         self.emit(ops.Call())
 
     def visit_identifier(self, node, vc):
