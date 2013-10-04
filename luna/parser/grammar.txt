@@ -1,3 +1,7 @@
+# program
+program             = block newline?
+block               = stmt ( ~"(\s*;|\s)" ws stmt )*
+
 # stmt
 stmt                = funcall / assignment
 assignment          = identifier ws "=" ws expr
@@ -34,4 +38,5 @@ identifier          = ~"[_a-zA-Z][_a-zA-Z0-9]*"
 boolean             = "true" / "false"
 nil                 = "nil"
 
+newline             = "\n"
 ws                  = ~"\s*"

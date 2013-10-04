@@ -30,3 +30,7 @@ def test_call1(interp_stmt, stdout):
 def test_call2(interp_stmt, stdout):
     frame = interp_stmt('print(1 - 3)')
     assert '-2\n' == stdout()
+
+def test_call3(interp_program, stdout):
+    frame = interp_program('a = 1\n print(a)')
+    assert '1\n' == stdout()
