@@ -25,10 +25,10 @@ class AstBuilder(NodeVisitor):
             rest = [and_e for (ws, op, ws, and_e) in rest]
             left = and_expr
             for and_e in rest:
-                left = ast.Expr(ast.Or(left, and_e))
-            return left.value
+                left = ast.Or(left, and_e)
+            return left
 
-        return ast.Expr(and_expr)
+        return and_expr
 
     def visit_and_expr(self, node, vc):
         cmp_expr, rest = vc
@@ -36,10 +36,10 @@ class AstBuilder(NodeVisitor):
             rest = [cmp_e for (ws, op, ws, cmp_e) in rest]
             left = cmp_expr
             for cmp_e in rest:
-                left = ast.Expr(ast.And(left, cmp_e))
-            return left.value
+                left = ast.And(left, cmp_e)
+            return left
 
-        return ast.Expr(cmp_expr)
+        return cmp_expr
 
     def visit_cmp_expr(self, node, vc):
         concat_expr, rest = vc
@@ -47,21 +47,18 @@ class AstBuilder(NodeVisitor):
             rest = [(op, concat_e) for (ws, op, ws, concat_e) in rest]
             left = concat_expr
             for op, concat_e in rest:
-                left = ast.Expr(ast.Cmp(left, op, concat_e))
-            return left.value
+                left = ast.Cmp(left, op, concat_e)
+            return left
 
-        return ast.Expr(concat_expr)
+        return concat_expr
 
     def visit_concat_expr(self, node, vc):
         [vc] = vc
         if type(vc) == list:
             arith_expr, ws, op, ws, concat_expr = vc
-            if type(concat_expr) == ast.Concat:
-                concat_expr = ast.Expr(concat_expr)
-
             return ast.Concat(arith_expr, concat_expr)
 
-        return ast.Expr(vc)
+        return vc
 
     def visit_arith_expr(self, node, vc):
         term_expr, rest = vc
@@ -69,13 +66,10 @@ class AstBuilder(NodeVisitor):
             rest = [(op, term_e) for (ws, op, ws, term_e) in rest]
             left = term_expr
             for op, term_e in rest:
-                if type(left) == ast.Term:
-                    left = ast.Expr(left)
+                left = ast.Arith(left, op, term_e)
+            return left
 
-                left = ast.Expr(ast.Arith(left, op, term_e))
-            return left.value
-
-        return ast.Expr(term_expr)
+        return term_expr
 
     def visit_term_expr(self, node, vc):
         unary_expr, rest = vc
@@ -83,10 +77,10 @@ class AstBuilder(NodeVisitor):
             rest = [(op, unary_e) for (ws, op, ws, unary_e) in rest]
             left = unary_expr
             for op, unary_e in rest:
-                left = ast.Expr(ast.Term(left, op, unary_e))
-            return left.value
+                left = ast.Term(left, op, unary_e)
+            return left
 
-        return ast.Expr(unary_expr)
+        return unary_expr
 
     def visit_unary_expr(self, node, vc):
         [vc] = vc
@@ -94,7 +88,7 @@ class AstBuilder(NodeVisitor):
             op, ws, power_expr = vc
             return ast.UnaryOp(op, power_expr)
 
-        return ast.Expr(vc)
+        return vc
 
     def visit_power_expr(self, node, vc):
         [vc] = vc
@@ -102,14 +96,14 @@ class AstBuilder(NodeVisitor):
             factor, ws, caret, ws, power_expr = vc
             return ast.Power(factor, power_expr)
 
-        return ast.Expr(vc)
+        return vc
 
     def visit_factor(self, node, vc):
         if len(vc) == 1:
-            return ast.Factor(vc[0])
+            return vc[0]
 
         paren, ws, expr, ws, paren = vc
-        return ast.Factor(expr)
+        return expr
 
 
     # Operators
@@ -127,7 +121,7 @@ class AstBuilder(NodeVisitor):
         return ast.Operator(node.text)
 
     def visit_operand(self, node, vc):
-        return ast.Operand(vc[0])
+        return vc[0]
 
 
     # Atoms
