@@ -1,7 +1,7 @@
 from luna.ast import *
 
 
-## Lowest to highest precedence: tests for associativity
+## Highest to lowest precedence: tests for associativity
 
 def test_power1(parse_expr):
     assert Expr(
@@ -104,7 +104,7 @@ def test_or1(parse_expr):
 
 ## Precedence
 
-def test_power_unary1(parse_expr):
+def test_mixedops1(parse_expr):
     assert Expr(
         Arith(
             Term(
@@ -119,3 +119,38 @@ def test_power_unary1(parse_expr):
             Number('9'),
         ),
     ) == parse_expr('5 * 4 ^ 2 + 9')
+
+
+def test_mixedops2(parse_expr):
+    assert Expr(
+        Term(
+            Expr(
+                Arith(
+                    Number('1'),
+                    Operator('+'),
+                    Number('3'),
+                ),
+            ),
+            Operator('*'),
+            Number('4'),
+        ),
+    ) == parse_expr('(1 + 3) * 4')
+
+
+def test_mixedops3(parse_expr):
+    assert Expr(
+        Or(
+            And(
+                UnaryOp(
+                    Operator('not'),
+                    Number('3'),
+                ),
+                Number('3'),
+            ),
+            Cmp(
+                Number('4'),
+                Operator('>'),
+                Number('4'),
+            ),
+        ),
+    ) == parse_expr('not 3 and 3 or 4 > 4')

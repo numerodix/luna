@@ -99,11 +99,12 @@ class AstBuilder(NodeVisitor):
         return vc
 
     def visit_factor(self, node, vc):
-        if len(vc) == 1:
-            return vc[0]
+        [vc] = vc
+        if type(vc) == list:
+            paren, ws, expr, ws, paren = vc
+            return expr
 
-        paren, ws, expr, ws, paren = vc
-        return expr
+        return vc
 
 
     # Operators
