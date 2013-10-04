@@ -1,3 +1,7 @@
+# stmt
+stmt                = funcall / assignment
+assignment          = identifier ws "=" ws expr
+
 # expressions
 expr                = funcall / or_expr / operand
 or_expr             = and_expr  ( ws "or" ws and_expr )*

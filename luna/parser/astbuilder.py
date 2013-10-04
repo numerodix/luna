@@ -12,6 +12,16 @@ class AstBuilder(NodeVisitor):
     def generic_visit(self, node, vc):
         return vc
 
+
+    # Statements
+
+    def visit_stmt(self, node, vc):
+        return ast.Stmt(vc[0])
+
+    def visit_assignment(self, node, vc):
+        id, ws, op, ws, expr = vc
+        return ast.Assignment(id, expr)
+
     
     # Expressions
 
