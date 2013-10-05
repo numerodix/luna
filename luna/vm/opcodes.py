@@ -58,6 +58,9 @@ class LoadConst(OpCode):
     def __init__(self, index):
         self.index = index
 
+class LoadName(OpCode):
+    pass
+
 class StoreName(OpCode):
     pass
 #    _slots = ('index',)

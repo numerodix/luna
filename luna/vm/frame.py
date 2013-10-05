@@ -39,6 +39,9 @@ class Frame(object):
             elif type(op) == ops.LoadConst:
                 self.stack.append(self.consts[op.index])
 
+            elif type(op) == ops.LoadName:
+                self.stack.append(self.env[op.index])
+
             elif type(op) == ops.StoreName:
                 var = self.stack.pop()
                 val = self.stack.pop()
