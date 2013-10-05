@@ -42,6 +42,8 @@ class Frame(object):
             elif type(op) == ops.StoreName:
                 var = self.stack.pop()
                 val = self.stack.pop()
+                if type(val) == obj.LVar:
+                    val = self.env[val]
                 self.env[var] = val
 
             self.pc += 1

@@ -31,6 +31,11 @@ def test_call2(interp_stmt, stdout):
     frame = interp_stmt('print(1 - 3)')
     assert '-2\n' == stdout()
 
-def test_call3(interp_program, stdout):
-    frame = interp_program('a = 1\n print(a)')
-    assert '1\n' == stdout()
+
+def test_ass_call1(interp_program, stdout):
+    frame = interp_program('a = 1 - 3 + 5\nprint(a)')
+    assert '3\n' == stdout()
+
+def test_ass_call2(interp_program, stdout):
+    frame = interp_program('a = 1 - 5\nb = a\nprint(b)')
+    assert '-4\n' == stdout()
