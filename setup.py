@@ -1,4 +1,5 @@
 import os
+from setuptools import find_packages
 from setuptools import setup
 
 def read(fname):
@@ -17,9 +18,7 @@ setup(
     scripts=[
         "bin/lua",
     ],
-    packages=[
-        'luna'
-    ],
+    packages=find_packages(exclude=['tests']),
     install_requires=read('requirements.txt'),
     long_description=read('README.rst'),
     classifiers=[
