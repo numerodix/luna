@@ -2,8 +2,6 @@ import os
 
 from parsimonious.grammar import Grammar
 
-from luna.parser.operators import OperatorTable
-from luna.parser.assoc import AssocRewriter
 from luna.parser.astbuilder import AstBuilder
 from luna.parser.astbuilder import prune
 from luna import util
@@ -16,8 +14,7 @@ class Parser(object):
         content = util.read(fp)
 
         self.grammar = Grammar(content)
-        self.optable = OperatorTable()
-        self.builder = AstBuilder(self.optable)
+        self.builder = AstBuilder()
 
     def parse_with_rule(self, rule, content):
         grammar = self.grammar

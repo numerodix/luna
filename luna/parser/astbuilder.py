@@ -6,9 +6,6 @@ from luna import ast
 
 
 class AstBuilder(NodeVisitor):
-    def __init__(self, optable, *args, **kwargs):
-        self.optable = optable
-
     def generic_visit(self, node, vc):
         return vc
 
