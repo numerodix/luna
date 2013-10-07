@@ -4,9 +4,10 @@ from luna.vm import opcodes as ops
 
 
 class Frame(object):
-    def __init__(self, code, consts):
+    def __init__(self, code, consts, vars):
         self.code = code
         self.consts = consts
+        self.vars = vars
 
         self.pc = 0
         self.env = {}
@@ -29,21 +30,24 @@ class Frame(object):
                 self.stack.append(v)
 
             elif type(op) == ops.Call:
-                funcname = self.stack.pop()
+                func = self.stack.pop()
                 arg = self.stack.pop()
                 if type(arg) == obj.LVar:
                     arg = self.env[arg]
-                func = getattr(builtin, 'lua_' + funcname.value)
                 func(arg)
 
             elif type(op) == ops.LoadConst:
                 self.stack.append(self.consts[op.index])
 
             elif type(op) == ops.LoadName:
-                self.stack.append(self.env[op.index])
+                lvar = self.vars[op.index]
+                value = self.env.get(lvar)
+                if value is None:
+                    value = getattr(builtin, 'lua_' + lvar.value)
+                self.stack.append(value)
 
             elif type(op) == ops.StoreName:
-                var = self.stack.pop()
+                var = self.vars[op.index]
                 val = self.stack.pop()
                 if type(val) == obj.LVar:
                     val = self.env[val]

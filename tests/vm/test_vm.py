@@ -40,9 +40,6 @@ def test_ass_call2(interp_program, stdout):
     frame = interp_program('a = 1 - 5\nb = a\nprint(b)')
     assert '-4\n' == stdout()
 
-def _test_ass_call3(interp_program):
+def test_ass_call3(interp_program, stdout):
     frame = interp_program('a = 1 - 5\nb = 7\nprint(a - b)')
-
-def _test_ass_call3(interp_program, stdout):
-    frame = interp_program('a = 1 - 5\nb = 7\nprint(a - b)')
-    assert '-4\n' == stdout()
+    assert '-11\n' == stdout()
