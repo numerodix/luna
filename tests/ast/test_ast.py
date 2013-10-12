@@ -33,7 +33,7 @@ def test_lazy2():
     assert Expr(Number('1')) == Expr(Lazy())
 
 def test_lazy3():
-    assert Program(Lazy(), Lazy()) != Program(Lazy())
+    assert Block(Lazy(), Lazy()) != Block(Lazy())
 
 def test_lazy4():
-    assert Program(Lazy()) != Program(Lazy(), Lazy())
+    assert Block(Lazy()) != Block(Lazy(), Lazy())

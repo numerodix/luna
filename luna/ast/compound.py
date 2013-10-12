@@ -135,10 +135,10 @@ class Power(ASTNode):
 
 
 class Program(ASTNode):
-    _slots = ('values',)
+    _slots = ('value',)
 
-    def __init__(self, *values):
-        self.values = values
+    def __init__(self, value):
+        self.value = value
 
 
 class Operand(ASTNode):

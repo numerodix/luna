@@ -10,6 +10,21 @@ class AstBuilder(NodeVisitor):
         return vc
 
 
+    # Program
+
+    def visit_program(self, node, vc):
+        block, newline = vc
+        return ast.Program(block)
+
+    def visit_block(self, node, vc):
+        stmt, rest = vc
+        stmts = [stmt]
+        if rest:
+            rest = [st for (semi, ws, st) in rest]
+            stmts.extend(rest)
+        return ast.Block(*stmts)
+
+
     # Statements
 
     def visit_stmt(self, node, vc):
