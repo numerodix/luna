@@ -1,8 +1,13 @@
 from luna.ast import *
 
 
-def _test_linecomment1(parse_program):
-    parse_program(
+def test_linecomment1(parse_program):
+    assert Program(
+        Block(
+            Stmt(Lazy()),
+            Stmt(Lazy()),
+        ),
+    ) == parse_program(
     '''
         x = 1       -- assign this
         print(x)    -- use x
@@ -11,9 +16,14 @@ def _test_linecomment1(parse_program):
 
 
 def test_multicomment1(parse_program):
-    parse_program(
+    assert Program(
+        Block(
+            Stmt(Lazy()),
+            Stmt(Lazy()),
+        ),
+    ) == parse_program(
     '''
-        x = --[[ comment ]] 1       --[[
+        x = 1       --[[
             comment
         ]]
         print(x)

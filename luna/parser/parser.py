@@ -17,6 +17,9 @@ class Parser(object):
         self.builder = AstBuilder()
 
     def parse_with_rule(self, rule, content):
+        # comment removal: broken as it will also match inside strings
+        content = re.sub('--(?!\[\[).*', '', content)
+
         grammar = self.grammar
         if rule is not None:
             grammar = grammar[rule]
