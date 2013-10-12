@@ -1,9 +1,10 @@
 # program
 program             = ws block
-block               = stmt*
 
 # stmt
-stmt                = funcall / assignment / seq_op
+block               = stmt*
+stmt                = funcall / assignment / do / seq_op
+do                  = "do" ws block ws "end"
 assignment          = identifier ws "=" ws expr
 seq_op              = ws* ( ";" ws* )?
 

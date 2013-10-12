@@ -10,3 +10,16 @@ def test_ass1(parse_stmt):
             ),
         ),
     ) == parse_stmt('a = 1')
+
+
+def test_do1(parse_stmt):
+    assert Stmt(
+        Block(
+            Stmt(
+                Call(
+                    Lazy(),
+                    Lazy(),
+                ),
+            ),
+        ),
+    ) == parse_stmt('do print(1) end')
