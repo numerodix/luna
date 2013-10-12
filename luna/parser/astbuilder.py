@@ -13,7 +13,7 @@ class AstBuilder(NodeVisitor):
     # Program
 
     def visit_program(self, node, vc):
-        block, newline = vc
+        ws, block, ws = vc
         return ast.Program(block)
 
     def visit_block(self, node, vc):

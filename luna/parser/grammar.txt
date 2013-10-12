@@ -1,5 +1,5 @@
 # program
-program             = block newline?
+program             = ws block ws
 block               = stmt ( ~"(\s*;|\s)" ws stmt )*
 
 # stmt
