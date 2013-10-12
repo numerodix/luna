@@ -184,19 +184,3 @@ class AstBuilder(NodeVisitor):
 
     def visit_nil(self, node, vc):
         return ast.Nil()
-
-
-def prune(node):
-    if type(node) == str:
-        return node
-
-    if type(node) in [ast.Expr, ast.Operand]:
-        node = node.value
-
-    values = [prune(c) for c in node]
-    if type(node) in [list, tuple]:
-        node = type(node)(values)
-    else:
-        node = type(node)(*values)
-
-    return node

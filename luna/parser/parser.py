@@ -4,7 +4,6 @@ import re
 from parsimonious.grammar import Grammar
 
 from luna.parser.astbuilder import AstBuilder
-from luna.parser.astbuilder import prune
 from luna import util
 
 
