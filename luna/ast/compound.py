@@ -171,6 +171,13 @@ class Return(ASTNode):
         self.expr = expr
 
 
+class SeqOp(ASTNode):
+    _slots = ('value',)
+
+    def __init__(self, value):
+        self.value = value
+
+
 class Stmt(ASTNode):
     _slots = ('value',)
 

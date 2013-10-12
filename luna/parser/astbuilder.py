@@ -13,26 +13,29 @@ class AstBuilder(NodeVisitor):
     # Program
 
     def visit_program(self, node, vc):
-        ws, block, ws = vc
+        ws, block = vc
         return ast.Program(block)
 
     def visit_block(self, node, vc):
-        stmt, rest = vc
-        stmts = [stmt]
-        if rest:
-            rest = [st for (semi, ws, st) in rest]
-            stmts.extend(rest)
+        stmts = vc
+        stmts = [stmt for stmt in stmts if not type(stmt) == ast.SeqOp]
         return ast.Block(*stmts)
 
 
     # Statements
 
     def visit_stmt(self, node, vc):
-        return ast.Stmt(vc[0])
+        value = vc[0]
+        if type(value) == ast.SeqOp:
+            return value
+        return ast.Stmt(value)
 
     def visit_assignment(self, node, vc):
         id, ws, op, ws, expr = vc
         return ast.Assignment(id, expr)
+
+    def visit_seq_op(self, node, vc):
+        return ast.SeqOp(node.text.strip())
 
     
     # Expressions

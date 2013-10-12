@@ -1,10 +1,11 @@
 # program
-program             = ws block ws
-block               = stmt ( ~"(\s*;|\s)" ws stmt )*
+program             = ws block
+block               = stmt*
 
 # stmt
-stmt                = funcall / assignment
+stmt                = funcall / assignment / seq_op
 assignment          = identifier ws "=" ws expr
+seq_op              = ws* ( ";" ws* )?
 
 # expressions
 expr                = funcall / or_expr / operand
