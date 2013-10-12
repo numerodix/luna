@@ -32,7 +32,7 @@ class AstBuilder(NodeVisitor):
 
     def visit_do(self, node, vc):
         do, ws, block, ws, end = vc
-        return block
+        return ast.Do(block)
 
     def visit_assignment(self, node, vc):
         id, ws, op, ws, expr = vc

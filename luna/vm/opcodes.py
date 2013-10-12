@@ -64,6 +64,12 @@ class LoadName(OpCode):
     def __init__(self, index):
         self.index = index
 
+class PopBlock(OpCode):
+    pass
+
+class SetupDo(OpCode):
+    pass
+
 class StoreName(OpCode):
     _slots = ('index',)
 

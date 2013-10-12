@@ -74,6 +74,13 @@ class Concat(ASTNode):
         self.right = right
 
 
+class Do(ASTNode):
+    _slots = ('value',)
+
+    def __init__(self, value):
+        self.value = value
+
+
 class Expr(ASTNode):
     _slots = ('value',)
 

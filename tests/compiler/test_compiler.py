@@ -116,3 +116,7 @@ def test_call2(compile_expr):
         obj.LVar('b'),
         obj.LVar('print')
     ]
+
+
+def test_do1(compile_stmt):
+    frame = compile_stmt('do print(1) end')

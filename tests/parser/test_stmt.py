@@ -14,11 +14,13 @@ def test_ass1(parse_stmt):
 
 def test_do1(parse_stmt):
     assert Stmt(
-        Block(
-            Stmt(
-                Call(
-                    Lazy(),
-                    Lazy(),
+        Do(
+            Block(
+                Stmt(
+                    Call(
+                        Lazy(),
+                        Lazy(),
+                    ),
                 ),
             ),
         ),

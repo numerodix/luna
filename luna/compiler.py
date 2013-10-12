@@ -77,6 +77,11 @@ class Compiler(GenericVisitor):
         i = self.add_operand(func)
         self.emit(ops.Call())
 
+    def visit_do(self, node, vc):
+        self.emit(ops.SetupDo())
+        self.emit(ops.PopBlock())
+
+
     def visit_identifier(self, node, vc):
         return obj.LVar(node.value)
 
