@@ -40,4 +40,8 @@ boolean             = "true" / "false"
 nil                 = "nil"
 
 newline             = "\n"
-ws                  = ~"\s*"
+ws                  = ( multicomment / white )*
+white               = ~"\s*"
+
+multicomment        = ~"\-\-\[\[.*\]\]"s
+linecomment         = ~"\s*\-\-.*"

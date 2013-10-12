@@ -17,9 +17,6 @@ class Parser(object):
         self.builder = AstBuilder()
 
     def parse_with_rule(self, rule, content):
-        # quick hack to strip single line comments
-        content = re.sub('\s*--.*', '', content)
-
         grammar = self.grammar
         if rule is not None:
             grammar = grammar[rule]
